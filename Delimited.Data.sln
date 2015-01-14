@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data", "Delimited.Data\Delimited.Data.csproj", "{51E5DAF3-D1F0-4895-A732-633F3F330C2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data.Tests", "Delimited.Data.Tests\Delimited.Data.Tests.csproj", "{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D308C03A-DF2F-4A51-BD95-0D2F389A386B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelimitedCodeGeneratorTests", "DelimitedCodeGeneratorTests\DelimitedCodeGeneratorTests.csproj", "{05B8BCA4-E370-488D-8519-EC15E2BDD347}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelimitedCodeGenerator", "DelimitedCodeGenerator\DelimitedCodeGenerator.csproj", "{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data.Specializations", "Delimited.Data.Specializations\Delimited.Data.Specializations.csproj", "{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data.Tools", "Delimited.Data.Tools\Delimited.Data.Tools.csproj", "{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51E5DAF3-D1F0-4895-A732-633F3F330C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E5DAF3-D1F0-4895-A732-633F3F330C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E5DAF3-D1F0-4895-A732-633F3F330C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E5DAF3-D1F0-4895-A732-633F3F330C2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05B8BCA4-E370-488D-8519-EC15E2BDD347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05B8BCA4-E370-488D-8519-EC15E2BDD347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05B8BCA4-E370-488D-8519-EC15E2BDD347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05B8BCA4-E370-488D-8519-EC15E2BDD347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
