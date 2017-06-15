@@ -51,7 +51,7 @@ The library is available under the MIT license. See the [License file][1] in the
 
 ## Thanks
 
-![Powered by NDepend](https://user-images.githubusercontent.com/7886450/27170068-7fa55bd2-51a4-11e7-94ba-080d20d854c8.jpg)
+![Powered by NDepend](http://putridparrot.com/blog/wp-content/uploads/2017/06/NDependLogo.jpg)
 
 ## TODO
  
