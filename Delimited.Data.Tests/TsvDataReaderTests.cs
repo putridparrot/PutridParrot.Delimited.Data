@@ -6,14 +6,14 @@ using System.Text;
 using Delimited.Data.Exceptions;
 using Delimited.Data.Specializations;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class TsvDataReaderTests
 	{
-		[Fact]
+		[Test]
 		public void TsvReader_Ctor_NonReadableStream()
 		{
 			var mock = new Mock<Stream>();
@@ -22,7 +22,7 @@ namespace Delimited.Data.Tests
 			Assert.Throws<DelimitedStreamReaderException>(() => { TsvReader reader = new TsvReader(mock.Object); });
 		}
 
-		[Fact]
+		[Test]
 		public void TsvReader_Ctor2_NonReadableStream()
 		{
 			var mock = new Mock<Stream>();
@@ -31,7 +31,7 @@ namespace Delimited.Data.Tests
 			Assert.Throws<DelimitedStreamReaderException>(() => { TsvReader reader = new TsvReader(mock.Object, Encoding.ASCII); });
 		}
 
-		[Fact]
+		[Test]
 		public void TsvReader_CloseImplicitlyCalledViaDispose()
 		{
 			var mock = new Mock<Stream>();
@@ -44,7 +44,7 @@ namespace Delimited.Data.Tests
 			mock.Verify();
 		}
 
-		[Fact]
+		[Test]
 		public void TsvReader_Close_ShouldCloseStream()
 		{
 			var mock = new Mock<Stream>();
@@ -57,7 +57,7 @@ namespace Delimited.Data.Tests
 			mock.Verify();
 		}
 
-		[Fact]
+		[Test]
 		public void TsvReader_ReadLine_MinimalTest()
 		{
 			// this is a minimal test as currently the code calls external class which should be tested
@@ -70,9 +70,9 @@ namespace Delimited.Data.Tests
 			var reader = new TsvReader(ms);
 			IEnumerable<string> tsv = reader.ReadLine();
 
-			Assert.Equal(2, tsv.Count());
-			Assert.Equal("Hello", tsv.ElementAt(0));
-			Assert.Equal("World", tsv.ElementAt(1));
+			Assert.AreEqual(2, tsv.Count());
+			Assert.AreEqual("Hello", tsv.ElementAt(0));
+			Assert.AreEqual("World", tsv.ElementAt(1));
 		}
 	}
 

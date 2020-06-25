@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using Delimited.Data.Exceptions;
 using Delimited.Data.Specializations;
-using Xunit;
+using NUnit.Framework;
 
 namespace Delimited.Data.Tests
 {
@@ -43,7 +43,7 @@ namespace Delimited.Data.Tests
 		//	return items;
 		//}
 
-		[Fact]
+		[Test]
 		public void GenerateReadMappings_FromValidMappingsStartAndEndElements()
 		{
 			Stream ms = Utils.ToStream(
@@ -54,14 +54,14 @@ namespace Delimited.Data.Tests
 							 "</DelimitedSerializerMappings>");
 
 			IList<FieldReadProperty> mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms);
-			Assert.Equal(3, mappings.Count);
+			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Name" && m.Value.Heading == "Heading Name"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Age" && m.Value.Heading == "Heading Age"));
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateWriteMappings_FromValidMappingsStartAndEndElements()
 		{
 			Stream ms = Utils.ToStream(
@@ -72,14 +72,14 @@ namespace Delimited.Data.Tests
 								"</DelimitedSerializerMappings>");
 
 			IList<FieldWriteProperty> mappings = DelimitedSerializer<Person>.GenerateWriteMappings(ms);
-			Assert.Equal(3, mappings.Count);
+			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Name" && m.Value.Heading == "Heading Name"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Age" && m.Value.Heading == "Heading Age"));
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateReadMappings_FromValidMappingsSingleElements()
 		{
 			Stream ms = Utils.ToStream(
@@ -90,14 +90,14 @@ namespace Delimited.Data.Tests
 								"</DelimitedSerializerMappings>");
 
 			IList<FieldReadProperty> mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms);
-			Assert.Equal(3, mappings.Count);
+			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Name" && m.Value.Heading == "Heading Name"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Age" && m.Value.Heading == "Heading Age"));
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateWriteMappings_FromValidMappingsSingleElements()
 		{
 			Stream ms = Utils.ToStream(
@@ -108,14 +108,14 @@ namespace Delimited.Data.Tests
 								"</DelimitedSerializerMappings>");
 
 			IList<FieldWriteProperty> mappings = DelimitedSerializer<Person>.GenerateWriteMappings(ms);
-			Assert.Equal(3, mappings.Count);
+			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Name" && m.Value.Heading == "Heading Name"));
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Age" && m.Value.Heading == "Heading Age"));
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateReadMappings_AndDeserialize()
 		{
 			Stream ms = Utils.ToStream(
@@ -129,13 +129,13 @@ namespace Delimited.Data.Tests
 
 			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateReadMappings_UsingIndicies_AndDeserialize()
 		{
 			Stream ms = Utils.ToStream(
@@ -149,13 +149,13 @@ namespace Delimited.Data.Tests
 
 			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateReadMappings_UsingIndiciesIgnoreOneRow_AndDeserialize()
 		{
 			Stream ms = Utils.ToStream(
@@ -170,13 +170,13 @@ namespace Delimited.Data.Tests
 
 			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, IgnoreFirstNRows = 1, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateReadMappings_AndDeserialize_WithMissingRequiredField_AndEnforceRequiredFieldsOn()
 		{
 			Stream ms = Utils.ToStream(
@@ -197,7 +197,7 @@ namespace Delimited.Data.Tests
 			});
 		}
 
-		[Fact]
+		[Test]
 		public void GenerateWriteMappings_AndSerialize()
 		{
 			Stream dataStream = Utils.ToStream("Heading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
@@ -223,10 +223,10 @@ namespace Delimited.Data.Tests
 
 			writeStream.ForceClose();
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 	}
 

@@ -6,14 +6,14 @@ using System.Text;
 using Delimited.Data.Exceptions;
 using Delimited.Data.Specializations;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class CsvDataReaderTests
 	{
-		[Fact]
+		[Test]
 		public void CsvReader_Ctor_NonReadableStream()
 		{
 			var mock = new Mock<Stream>();
@@ -22,7 +22,7 @@ namespace Delimited.Data.Tests
 			Assert.Throws<DelimitedStreamReaderException>(() => { CsvReader reader = new CsvReader(mock.Object); });
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_Ctor2_NonReadableStream()
 		{
 			var mock = new Mock<Stream>();
@@ -31,7 +31,7 @@ namespace Delimited.Data.Tests
 			Assert.Throws<DelimitedStreamReaderException>(() => { CsvReader reader = new CsvReader(mock.Object, Encoding.ASCII); });
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_CloseImplicitlyCalledViaDispose()
 		{
 			var mock = new Mock<Stream>();
@@ -44,7 +44,7 @@ namespace Delimited.Data.Tests
 			mock.Verify();
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_Close_ShouldCloseStream()
 		{
 			var mock = new Mock<Stream>();
@@ -57,29 +57,29 @@ namespace Delimited.Data.Tests
 			mock.Verify();
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_ReadLine_MinimalTest()
 		{
 			var reader = new CsvReader(Utils.ToStream("Hello, World"));
 
 			IList<string> csv = reader.ReadLine();
 
-			Assert.Equal(2, csv.Count);
-			Assert.Equal("Hello", csv[0]);
-			Assert.Equal("World", csv[1]);
+			Assert.AreEqual(2, csv.Count);
+			Assert.AreEqual("Hello", csv[0]);
+			Assert.AreEqual("World", csv[1]);
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_ReadOneItemWithQuotes()
 		{
 			var reader = new CsvReader(Utils.ToStream("\"Hello, World\""));
 			IList<string> csv = reader.ReadLine();
 
-			Assert.Equal(1, csv.Count);
-			Assert.Equal("Hello, World", csv[0]);
+			Assert.AreEqual(1, csv.Count);
+			Assert.AreEqual("Hello, World", csv[0]);
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_CheckOptionsSetterGetter()
 		{
 			var options = new DelimitedOptions('.');
@@ -89,7 +89,7 @@ namespace Delimited.Data.Tests
 				Options = options
 			};
 
-			Assert.Equal(options, reader.Options);
+			Assert.AreEqual(options, reader.Options);
 		}
 	}
 }

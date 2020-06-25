@@ -4,14 +4,14 @@ using System.Text;
 using Delimited.Data.Exceptions;
 using Delimited.Data.Specializations;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class CsvWriterTests
 	{
-		[Fact]
+		[Test]
 		public void CsvWriter_Ctor_NonWriteableStream()
 		{
 			var mock = new Mock<Stream>();
@@ -20,7 +20,7 @@ namespace Delimited.Data.Tests
 			Assert.Throws<DelimitedStreamWriterException>(() => { CsvWriter writer = new CsvWriter(mock.Object); });
 		}
 
-		[Fact]
+		[Test]
 		public void CsvWriter_Ctor2_NonWriteableStream()
 		{
 			var mock = new Mock<Stream>();
@@ -29,7 +29,7 @@ namespace Delimited.Data.Tests
 			Assert.Throws<DelimitedStreamWriterException>(() => { CsvWriter writer = new CsvWriter(mock.Object, Encoding.ASCII); });
 		}
 
-		[Fact]
+		[Test]
 		public void CsvWriter_CloseImplicitlyCalledViaDispose()
 		{
 			var mock = new Mock<Stream>();
@@ -42,7 +42,7 @@ namespace Delimited.Data.Tests
 			mock.Verify();
 		}
 
-		[Fact]
+		[Test]
 		public void CsvWriter_Close_ShouldCloseStream()
 		{
 			var mock = new Mock<Stream>();
@@ -55,7 +55,7 @@ namespace Delimited.Data.Tests
 			mock.Verify();
 		}
 
-		[Fact]
+		[Test]
 		public void CsvWriter_WriteLine()
 		{
 			var ms = new MemoryStream();
@@ -69,17 +69,17 @@ namespace Delimited.Data.Tests
 			var reader = new StreamReader(ms);
 			string result = reader.ReadToEnd();
 
-			Assert.Equal("Hello,World\r\n", result);
+			Assert.AreEqual("Hello,World\r\n", result);
 		}
 
-		[Fact]
+		[Test]
 		public void CsvReader_CheckOptionsSetterGetter()
 		{
 			var options = new DelimitedOptions('.');
 
 			var writer = new CsvWriter(new MemoryStream()) {Options = options};
 
-			Assert.Equal(options, writer.Options);
+			Assert.AreEqual(options, writer.Options);
 		}
 	}
 

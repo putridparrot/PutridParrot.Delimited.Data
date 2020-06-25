@@ -7,33 +7,33 @@ using System.Reflection;
 using Delimited.Data;
 using Delimited.Data.Tests;
 using DelimitedCodeGenerator;
-using Xunit;
+using NUnit.Framework;
 
 namespace DelimitedCodeGeneratorTests
 {
 	[ExcludeFromCodeCoverage]
 	public class CodeGeneratorTests
 	{
-		[Fact]
+		[Test]
 		public void ParseNullStream_ShouldThrowArgumentNullException()
 		{
 			Assert.Throws<ArgumentNullException>(() => Parser.Parse((Stream)null, false, ',', '"', false, null));
 		}
 
-		[Fact]
+		[Test]
 		public void ParseNullString_ShouldThrowArgumentNullException()
 		{
 			Assert.Throws<ArgumentNullException>(() => Parser.Parse((string)null, false, ',', '"', false, null));
 		}
 
-		[Fact]
+		[Test]
 		public void ParseEmptyString_ShouldThrowArgumentNullException()
 		{
 			var codeBuilder = new CSharpCodeBuilder();
 			Assert.Throws<FileNotFoundException>(() => Parser.Parse(String.Empty, false, ',', '"', false, codeBuilder));
 		}
 
-		[Fact]
+		[Test]
 		public void Parse_WithHeadings()
 		{
 			const string data = "Updated,Name,Age\r\n20/11/2003,Road Runner,11";
@@ -54,12 +54,12 @@ namespace DelimitedCodeGeneratorTests
 			object current = enumerator.Current;
 			PropertyInfo[] properties = current.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-			Assert.Equal("Road Runner", properties.FirstOrDefault(p => p.Name == "Name").GetValue(current));
-			Assert.Equal(11, properties.FirstOrDefault(p => p.Name == "Age").GetValue(current));
-			Assert.Equal("20/11/2003", ((DateTime)properties.FirstOrDefault(p => p.Name == "Updated").GetValue(current)).ToString("dd/MM/yyyy"));
+			Assert.AreEqual("Road Runner", properties.FirstOrDefault(p => p.Name == "Name").GetValue(current));
+			Assert.AreEqual(11, properties.FirstOrDefault(p => p.Name == "Age").GetValue(current));
+			Assert.AreEqual("20/11/2003", ((DateTime)properties.FirstOrDefault(p => p.Name == "Updated").GetValue(current)).ToString("dd/MM/yyyy"));
 		}
 
-		[Fact]
+		[Test]
 		public void Parse_WithHeadingsWithSpacesInText()
 		{
 			const string data = "Updated Date,Name,Age\r\n20/11/2003,Road Runner,11";
@@ -80,12 +80,12 @@ namespace DelimitedCodeGeneratorTests
 			object current = enumerator.Current;
 			PropertyInfo[] properties = current.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-			Assert.Equal("Road Runner", properties.FirstOrDefault(p => p.Name == "Name").GetValue(current));
-			Assert.Equal(11, properties.FirstOrDefault(p => p.Name == "Age").GetValue(current));
-			Assert.Equal("20/11/2003", ((DateTime)properties.FirstOrDefault(p => p.Name == "UpdatedDate").GetValue(current)).ToString("dd/MM/yyyy"));
+			Assert.AreEqual("Road Runner", properties.FirstOrDefault(p => p.Name == "Name").GetValue(current));
+			Assert.AreEqual(11, properties.FirstOrDefault(p => p.Name == "Age").GetValue(current));
+			Assert.AreEqual("20/11/2003", ((DateTime)properties.FirstOrDefault(p => p.Name == "UpdatedDate").GetValue(current)).ToString("dd/MM/yyyy"));
 		}
 
-		[Fact]
+		[Test]
 		public void Parse_WithHeadingsWithInvalidCharacters()
 		{
 			const string data = "+Updated Date,\"Name\",Age\r\n20/11/2003,Road Runner,11";
@@ -106,9 +106,9 @@ namespace DelimitedCodeGeneratorTests
 			object current = enumerator.Current;
 			PropertyInfo[] properties = current.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-			Assert.Equal("Road Runner", properties.FirstOrDefault(p => p.Name == "Name").GetValue(current));
-			Assert.Equal(11, properties.FirstOrDefault(p => p.Name == "Age").GetValue(current));
-			Assert.Equal("20/11/2003", ((DateTime)properties.FirstOrDefault(p => p.Name == "UpdatedDate").GetValue(current)).ToString("dd/MM/yyyy"));
+			Assert.AreEqual("Road Runner", properties.FirstOrDefault(p => p.Name == "Name").GetValue(current));
+			Assert.AreEqual(11, properties.FirstOrDefault(p => p.Name == "Age").GetValue(current));
+			Assert.AreEqual("20/11/2003", ((DateTime)properties.FirstOrDefault(p => p.Name == "UpdatedDate").GetValue(current)).ToString("dd/MM/yyyy"));
 		}
 	}
 

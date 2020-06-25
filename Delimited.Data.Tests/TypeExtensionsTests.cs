@@ -1,80 +1,80 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Delimited.Data.Utils;
-using Xunit;
+using NUnit.Framework;
 
 namespace Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class TypeExtensionsTests
 	{
-		[Fact]
+		[Test]
 		public void IsBoolean_WithNull_ShouldReturnFalse()
 		{
 			Assert.False(((object)null).IsBoolean());
 		}
 
-		[Fact]
+		[Test]
 		public void IsBoolean_WithNonBoolean_ShouldReturnFalse()
 		{
 			Assert.False("Hello".IsBoolean());
 		}
 
-		[Fact]
+		[Test]
 		public void IsBoolean_WithBoolean_ShouldReturnTrue()
 		{
 			Assert.True(true.IsBoolean());
 		}
 
-		[Fact]
+		[Test]
 		public void IsBooleanType_WithNull_ShouldReturnFalse()
 		{
 			Assert.False(((Type)null).IsBooleanType());
 		}
 
-		[Fact]
+		[Test]
 		public void IsBooleanType_WithNonBoolean_ShouldReturnFalse()
 		{
 			Assert.False(typeof(string).IsBooleanType());
 		}
 
-		[Fact]
+		[Test]
 		public void IsBooleanType_WithBoolean_ShouldReturnTrue()
 		{
 			Assert.True(typeof(bool).IsBooleanType());
 		}
 
-		[Fact]
+		[Test]
 		public void IsNumeric_WithNull_ShouldReturnFalse()
 		{
 			Assert.False(((object)null).IsNumeric());
 		}
 
-		[Fact]
+		[Test]
 		public void IsNumeric_WithNonNumeric_ShouldReturnFalse()
 		{
 			Assert.False("Hello".IsNumeric());
 		}
 
-		[Fact]
+		[Test]
 		public void IsNumeric_WithNumeric_ShouldReturnTrue()
 		{
 			Assert.True(123.IsNumeric());
 		}
 
-		[Fact]
+		[Test]
 		public void IsNumericType_WithNull_ShouldReturnFalse()
 		{
 			Assert.False(((Type)null).IsNumericType());
 		}
 
-		[Fact]
+		[Test]
 		public void IsNumericType_WithNonNumeric_ShouldReturnFalse()
 		{
 			Assert.False(typeof(string).IsNumericType());
 		}
 
-		[Fact]
+		[Test]
 		public void IsNumericType_WithNumeric_ShouldReturnTrue()
 		{
 			Assert.True(typeof(int).IsNumericType());

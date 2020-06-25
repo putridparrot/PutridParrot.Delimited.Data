@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Xunit;
+using NUnit.Framework;
 using Delimited.Data.Specializations;
 using Delimited.Data.Tools;
 
@@ -23,7 +23,7 @@ namespace Delimited.Data.Tests
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void Connect_WithNullInput()
 		{
 			var ms = new MyStream();
@@ -32,14 +32,14 @@ namespace Delimited.Data.Tests
 			Assert.Throws<ArgumentNullException>(() => DelimitedStreamConnector.Pipe(null, writer));
 		}
 
-		[Fact]
+		[Test]
 		public void Connect_WithNullOutput()
 		{
 			var reader = new CsvReader(Utils.ToStream("Hello, World"));
 			Assert.Throws<ArgumentNullException>(() => DelimitedStreamConnector.Pipe(reader, null));
 		}
 
-		[Fact]
+		[Test]
 		public void Connect_TurnCsvIntoTsv()
 		{
 			var ms = new MyStream();
@@ -56,10 +56,10 @@ namespace Delimited.Data.Tests
 
 			ms.ForceClose();
 
-			Assert.Equal("Hello\tWorld\r\n", result);
+			Assert.AreEqual("Hello\tWorld\r\n", result);
 		}
 
-		[Fact]
+		[Test]
 		public void Connect_TurnCsvIntoTsvSkipFirstThreeLines()
 		{
 			var ms = new MyStream();
@@ -76,7 +76,7 @@ namespace Delimited.Data.Tests
 
 			ms.ForceClose();
 
-			Assert.Equal("Hello\tWorld\r\n", result);
+			Assert.AreEqual("Hello\tWorld\r\n", result);
 		}
 	}
 }

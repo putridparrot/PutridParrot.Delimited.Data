@@ -1,24 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data", "Delimited.Data\Delimited.Data.csproj", "{51E5DAF3-D1F0-4895-A732-633F3F330C2E}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delimited.Data", "Delimited.Data\Delimited.Data.csproj", "{51E5DAF3-D1F0-4895-A732-633F3F330C2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data.Tests", "Delimited.Data.Tests\Delimited.Data.Tests.csproj", "{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delimited.Data.Tests", "Delimited.Data.Tests\Delimited.Data.Tests.csproj", "{6C45E95F-6EAC-4795-9D0B-2800165FC5D5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D308C03A-DF2F-4A51-BD95-0D2F389A386B}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelimitedCodeGeneratorTests", "DelimitedCodeGeneratorTests\DelimitedCodeGeneratorTests.csproj", "{05B8BCA4-E370-488D-8519-EC15E2BDD347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelimitedCodeGeneratorTests", "DelimitedCodeGeneratorTests\DelimitedCodeGeneratorTests.csproj", "{05B8BCA4-E370-488D-8519-EC15E2BDD347}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelimitedCodeGenerator", "DelimitedCodeGenerator\DelimitedCodeGenerator.csproj", "{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelimitedCodeGenerator", "DelimitedCodeGenerator\DelimitedCodeGenerator.csproj", "{42BF3CF2-1A95-4C67-82D5-AE957E9A4723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delimited.Data.Specializations", "Delimited.Data.Specializations\Delimited.Data.Specializations.csproj", "{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data.Specializations", "Delimited.Data.Specializations\Delimited.Data.Specializations.csproj", "{AB3FA288-EA82-4A06-AAD1-12284D8E9DAC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delimited.Data.Tools", "Delimited.Data.Tools\Delimited.Data.Tools.csproj", "{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delimited.Data.Tools", "Delimited.Data.Tools\Delimited.Data.Tools.csproj", "{D59BAD8F-83C4-47C6-BD76-629C499EAAB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,5 +48,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93659ACD-439C-4293-85CB-238924978A83}
 	EndGlobalSection
 EndGlobal

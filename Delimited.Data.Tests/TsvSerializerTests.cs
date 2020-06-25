@@ -5,7 +5,7 @@ using System.IO;
 using Delimited.Data.Attributes;
 using Delimited.Data.Exceptions;
 using Delimited.Data.Specializations;
-using Xunit;
+using NUnit.Framework;
 
 namespace Delimited.Data.Tests
 {
@@ -59,7 +59,7 @@ namespace Delimited.Data.Tests
 			return items;
 		}
 
-		[Fact]
+		[Test]
 		public void Serialize()
 		{
 			var ms = new MyStream();
@@ -77,11 +77,11 @@ namespace Delimited.Data.Tests
 
 			ms.ForceClose();
 
-			Assert.Equal(4, split.Length);
-			Assert.Equal("Updated\tName\tAge\tEmployed\tMarried", split[0]);
+			Assert.AreEqual(4, split.Length);
+			Assert.AreEqual("Updated\tName\tAge\tEmployed\tMarried", split[0]);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize()
 		{
 			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11");
@@ -89,13 +89,13 @@ namespace Delimited.Data.Tests
 			IList<Person> items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_WithMissingHeader()
 		{
 			Stream ms = Utils.ToStream("20/11/2003\tRoad Runner\t11");
@@ -110,7 +110,7 @@ namespace Delimited.Data.Tests
 			});
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_UsingAlternateNames()
 		{
 			Stream ms = Utils.ToStream("U\tN\tA\r\n20/11/2003\tRoad Runner\t11");
@@ -118,13 +118,13 @@ namespace Delimited.Data.Tests
 			IList<Person> items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_UsingBooleanYN()
 		{
 			Stream ms = Utils.ToStream("U\tN\tA\tE\tM\r\n20/11/2003\tRoad Runner\t11\tY\tN");
@@ -132,14 +132,14 @@ namespace Delimited.Data.Tests
 			IList<Person> items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
-			Assert.Equal(true, items[0].Employed);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
+			Assert.AreEqual(true, items[0].Employed);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_UsingBoolean()
 		{
 			Stream ms = Utils.ToStream("U\tN\tA\tE\tM\r\n20/11/2003\tRoad Runner\t11\ttrue\tfalse");
@@ -147,14 +147,14 @@ namespace Delimited.Data.Tests
 			IList<Person> items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
-			Assert.Equal(true, items[0].Employed);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
+			Assert.AreEqual(true, items[0].Employed);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_WithEmptyRows_DefaultIgnoreEmptyRows()
 		{
 			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n\t\t\r\n\t\t\r\n20/11/2003\tRoad Runner\t11\r\n\t\t\r\n");
@@ -162,13 +162,13 @@ namespace Delimited.Data.Tests
 			IList<Person> items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
-			Assert.Equal(1, items.Count);
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_WithEmptyRows_IgnoreEmptyRowsSetToFalse()
 		{
 			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n\t\t\r\n\t\t\r\n20/11/2003\tRoad Runner\t11\r\n\t\t\r\n");
@@ -177,51 +177,51 @@ namespace Delimited.Data.Tests
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms,
 					new DelimitedDeserializeOptions {UseHeadings = true, IgnoreEmptyRows = false}));
 
-			Assert.Equal(4, items.Count);
+			Assert.AreEqual(4, items.Count);
 
-			Assert.Equal(DateTime.MinValue, items[0].Updated);
-			Assert.Equal("", items[0].Name);
-			Assert.Equal(0, items[0].Age);
+			Assert.AreEqual(DateTime.MinValue, items[0].Updated);
+			Assert.AreEqual("", items[0].Name);
+			Assert.AreEqual(0, items[0].Age);
 
-			Assert.Equal(DateTime.MinValue, items[1].Updated);
-			Assert.Equal("", items[1].Name);
-			Assert.Equal(0, items[1].Age);
+			Assert.AreEqual(DateTime.MinValue, items[1].Updated);
+			Assert.AreEqual("", items[1].Name);
+			Assert.AreEqual(0, items[1].Age);
 
-			Assert.Equal(new DateTime(2003, 11, 20), items[2].Updated);
-			Assert.Equal("Road Runner", items[2].Name);
-			Assert.Equal(11, items[2].Age);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[2].Updated);
+			Assert.AreEqual("Road Runner", items[2].Name);
+			Assert.AreEqual(11, items[2].Age);
 
-			Assert.Equal(DateTime.MinValue, items[3].Updated);
-			Assert.Equal("", items[3].Name);
-			Assert.Equal(0, items[3].Age);
+			Assert.AreEqual(DateTime.MinValue, items[3].Updated);
+			Assert.AreEqual("", items[3].Name);
+			Assert.AreEqual(0, items[3].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_AlternateDeserializeUsingStream_WithoutOptions()
 		{
 			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11\r\n");
 
 			IList<Person> items = new List<Person>(TsvSerializer<Person>.Deserialize(ms));
 
-			Assert.Equal(1, items.Count);
+			Assert.AreEqual(1, items.Count);
 
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_AlternateDeserializeUsingString_WithoutOptions()
 		{
 			const string ms = "Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11\r\n";
 
 			IList<Person> items = new List<Person>(TsvSerializer<Person>.Deserialize(ms));
 
-			Assert.Equal(1, items.Count);
+			Assert.AreEqual(1, items.Count);
 
-			Assert.Equal(new DateTime(2003, 11, 20), items[0].Updated);
-			Assert.Equal("Road Runner", items[0].Name);
-			Assert.Equal(11, items[0].Age);
+			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
+			Assert.AreEqual("Road Runner", items[0].Name);
+			Assert.AreEqual(11, items[0].Age);
 		}
 	}
 }

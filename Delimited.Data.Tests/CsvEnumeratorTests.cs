@@ -3,14 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Delimited.Data.Specializations;
 using Microsoft.CSharp.RuntimeBinder;
-using Xunit;
+using NUnit.Framework;
+
 
 namespace Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class CsvEnumeratorTests
 	{
-		[Fact]
+		[Test]
 		public void Deserialize_EnumerateAllItems_ShouldListEachSymbolCorrectly()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -20,13 +21,13 @@ namespace Delimited.Data.Tests
 			int idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
-				Assert.Equal(symbols[idx], row.Symbol);
+				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
 				idx++;
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void DeserializeNoOptions_EnumerateAllItems_ShouldListEachSymbolCorrectly()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -36,13 +37,13 @@ namespace Delimited.Data.Tests
 			int idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content)))
 			{
-				Assert.Equal(symbols[idx], row.Symbol);
+				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
 				idx++;
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void DeserializeUsingString_EnumerateAllItems_ShouldListEachSymbolCorrectly()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -52,13 +53,13 @@ namespace Delimited.Data.Tests
 			int idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(content, new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
-				Assert.Equal(symbols[idx], row.Symbol);
+				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
 				idx++;
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void DeserializeUsingStringNoOptions_EnumerateAllItems_ShouldListEachSymbolCorrectly()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -68,13 +69,13 @@ namespace Delimited.Data.Tests
 			int idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(content))
 			{
-				Assert.Equal(symbols[idx], row.Symbol);
+				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
 				idx++;
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_EnumerateAllItems_ShouldListEachSymbolCorrectly_UsingIndexer()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -84,13 +85,13 @@ namespace Delimited.Data.Tests
 			int idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
-				Assert.Equal(symbols[idx], row["Symbol"]);
+				Assert.AreEqual(symbols[idx], row["Symbol"]);
 				Console.WriteLine(String.Format("{0} {1} {2}", row["Symbol"], row["High"], row["Low"]));
 				idx++;
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_UsingALinqQueryToGetPartialDataAndTypeInferCorrectly()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -100,13 +101,13 @@ namespace Delimited.Data.Tests
 			var query = from dynamic r in ds where r.Open > 100 select r;
 			foreach (var row in query)
 			{
-				Assert.Equal("GOOG", row.Symbol);
+				Assert.AreEqual("GOOG", row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
 			}
 
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_UsingALinqQueryToGetPartialDataAndTypeInferCorrectly_NotHeadersSuppliedOrExpected()
 		{
 			const string content = "MSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -117,12 +118,12 @@ namespace Delimited.Data.Tests
 			foreach (var row in query)
 			{
 				Console.WriteLine(row[0]);
-				Assert.Equal("GOOG", row.Column1);
+				Assert.AreEqual("GOOG", row.Column1);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Column1, row.Column2, row.Column3));
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_UsingALinqQueryToGetPartialDataAndTypeInferCorrectly_NotHeadersSuppliedOrExpected_UsingIndexing()
 		{
 			const string content = "MSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -132,12 +133,12 @@ namespace Delimited.Data.Tests
 			var query = from dynamic r in ds where r[2] > 100 select r;
 			foreach (var row in query)
 			{
-				Assert.Equal("GOOG", row[0]);
+				Assert.AreEqual("GOOG", row[0]);
 				Console.WriteLine(String.Format("{0} {1} {2}", row[0], row[1], row[2]));
 			}
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_TryToAccessMissingProperty()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
@@ -151,7 +152,7 @@ namespace Delimited.Data.Tests
 			});
 		}
 
-		[Fact]
+		[Test]
 		public void Deserialize_TryToAccessMissingIndex()
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
