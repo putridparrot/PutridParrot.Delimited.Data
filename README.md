@@ -1,5 +1,7 @@
 ## Delimited.Data
 
+[![Build status](https://ci.appveyor.com/api/projects/status/rhbmyjtp0eymo53t?svg=true)](https://ci.appveyor.com/project/putridparrot/delimited-data)
+
 Delimited.Data was designed to allow me to interact CSV, TSV etc. data. There are specializations within the Delimited.Data.Specializations assembly for Csv and Tsv but you can easily create your own on top of the Delimited.Data class.
 
 Let's start by looking at the most obvious specializations - those which interact with CSV.
