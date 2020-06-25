@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Delimited.Data.Exceptions;
 using Delimited.Data.Specializations;
 using NUnit.Framework;
@@ -42,6 +43,14 @@ namespace Delimited.Data.Tests
 		//	items.Add(new Person { Name = "Scrappy", Age = 5, Updated = new DateTime(2013, 10, 1, 9, 9, 9) });
 		//	return items;
 		//}
+
+        [SetUp]
+        public void SetUp()
+        {
+            var culture = new System.Globalization.CultureInfo("en-GB");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+        }
 
 		[Test]
 		public void GenerateReadMappings_FromValidMappingsStartAndEndElements()
