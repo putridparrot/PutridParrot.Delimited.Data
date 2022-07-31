@@ -50,14 +50,3 @@ DelimitedStreamConnector is a very simple class which simply handles the connect
 The library is available under the MIT license. See the [License file][1] in the GitHub repository.
 
   [1]: https://github.com/putridparrot/Delimited.Data/blob/master/LICENSE
-
-## Thanks
-
-![Powered by NDepend](http://putridparrot.com/blog/wp-content/uploads/2017/06/NDependLogo.jpg)
-
-## TODO
- 
- * Alter code to better handle culture translations, for example DateTime formats.
- * Look at implementing using the PCL
- * Possibly breakout the different specializations and different methods of handling delimited data into smaller assemblies in case we use on mobile devices - to reduce the footprint.
- * Localize the ExtendedBooleanConvertor ?
