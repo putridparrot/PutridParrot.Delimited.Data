@@ -12,7 +12,7 @@ jobs:
     name: Build on ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-latest]
         tools-version: [6.0.x]
     runs-on: ${{ matrix.os }}
 
