@@ -36,7 +36,8 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: PutridParrot.Delimited.Data
-        path: /home/runner/work/PutridParrot.Delimited.Data/PutridParrot.Delimited.Data/PutridParrot.Delimited.Data/bin/Release/PutridParrot.Delimited.Data.*.nupkg
+        path: D:\a\PutridParrot.Delimited.Data\PutridParrot.Delimited.Data\PurtidParrot.Delimited.Data.Specializations\bin\Release\PutridParrot.Delimited.Data.*.nupkg
+#        path: /home/runner/work/PutridParrot.Delimited.Data/PutridParrot.Delimited.Data/PutridParrot.Delimited.Data/bin/Release/PutridParrot.Delimited.Data.*.nupkg
 #    - name: Publish to Nuget
 #      run: dotnet nuget push /home/runner/work/PutridParrot.Delimited.Data/PutridParrot.Delimited.Data/PutridParrot.Delimited.Data/bin/Release/*.nupkg --skip-duplicate --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
     - name: Publish to GitHub
