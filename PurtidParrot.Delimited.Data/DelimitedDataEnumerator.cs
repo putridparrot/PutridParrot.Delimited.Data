@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// This is a dynamic implemantion of the Deserialization methods aimed at use with LINQ

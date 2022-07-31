@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Used to set options for the deserializing objects

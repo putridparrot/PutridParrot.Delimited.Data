@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Used for setting the serialization options

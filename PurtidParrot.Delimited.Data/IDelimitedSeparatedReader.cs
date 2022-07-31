@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	public interface IDelimitedSeparatedReader
 	{

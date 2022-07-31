@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Diagnostics.CodeAnalysis;
-using Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Exceptions;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Low-level writer, simply used to write rows of data 

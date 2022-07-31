@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
-using Delimited.Data.Attributes;
-using Delimited.Data.Exceptions;
-using Delimited.Data.Specializations;
+using PutridParrot.Delimited.Data.Attributes;
+using PutridParrot.Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Specializations;
 using NUnit.Framework;
 
-namespace Delimited.Data.Tests
+namespace PutridParrot.Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class TsvSerializerTests

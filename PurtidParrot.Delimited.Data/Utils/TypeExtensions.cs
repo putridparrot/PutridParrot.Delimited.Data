@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace Delimited.Data.Utils
+namespace PutridParrot.Delimited.Data.Utils
 {
 	// needs to move to a more generic assembly
 	public static class TypeExtensions

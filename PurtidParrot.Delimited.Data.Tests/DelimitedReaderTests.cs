@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework;
-using Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Exceptions;
 
-namespace Delimited.Data.Tests
+namespace PutridParrot.Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class DelimitedReaderTests

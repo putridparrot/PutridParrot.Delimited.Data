@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.IO;
 
-namespace Delimited.Data.Specializations
+namespace PutridParrot.Delimited.Data.Specializations
 {
 	/// <summary>
 	/// A Tsv specialization of the DelimitedDataEnumerator

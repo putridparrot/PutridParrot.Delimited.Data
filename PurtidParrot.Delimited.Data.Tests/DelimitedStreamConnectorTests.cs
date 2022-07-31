@@ -2,10 +2,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using NUnit.Framework;
-using Delimited.Data.Specializations;
-using Delimited.Data.Tools;
+using PutridParrot.Delimited.Data.Specializations;
+using PutridParrot.Delimited.Data.Tools;
 
-namespace Delimited.Data.Tests
+namespace PutridParrot.Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class DelimitedStreamConnectorTests

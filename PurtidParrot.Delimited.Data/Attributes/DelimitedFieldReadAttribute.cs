@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Delimited.Data.Attributes
+namespace PutridParrot.Delimited.Data.Attributes
 {
 	/// <summary>
 	/// Marks a property or field as a readable data field.

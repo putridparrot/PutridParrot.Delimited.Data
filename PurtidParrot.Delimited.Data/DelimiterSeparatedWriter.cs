@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Gives the capability of writing delimiter separated data. It requires a StreamWriter to actual

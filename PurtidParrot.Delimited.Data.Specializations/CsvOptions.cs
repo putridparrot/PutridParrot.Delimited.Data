@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Delimited.Data.Specializations
+namespace PutridParrot.Delimited.Data.Specializations
 {
 	/// <summary>
 	/// The "standard" Csv options

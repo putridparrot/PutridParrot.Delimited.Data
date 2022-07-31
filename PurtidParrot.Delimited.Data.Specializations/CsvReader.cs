@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Delimited.Data.Specializations
+namespace PutridParrot.Delimited.Data.Specializations
 {
 	/// <summary>
 	/// A specialization of a DelimitedStreamReader, set up to handle comma separated value streams

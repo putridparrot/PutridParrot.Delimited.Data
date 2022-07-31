@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Delimited.Data.Specializations
+namespace PutridParrot.Delimited.Data.Specializations
 {
 	public static class CsvSerializer<T> where T : new()
 	{

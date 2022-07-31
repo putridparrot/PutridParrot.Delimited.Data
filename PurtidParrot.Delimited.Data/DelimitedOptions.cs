@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Used to define the delimited options which tells other classes

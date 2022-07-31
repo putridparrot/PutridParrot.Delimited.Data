@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Delimited.Data.Specializations
+namespace PutridParrot.Delimited.Data.Specializations
 {
 	/// <summary>
 	/// A specialization of a DelimitedStreamWriter, set up to handle tab separated value streams

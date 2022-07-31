@@ -7,12 +7,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-using Delimited.Data.Attributes;
-using Delimited.Data.Utils;
+using PutridParrot.Delimited.Data.Attributes;
+using PutridParrot.Delimited.Data.Utils;
 using System.ComponentModel;
-using Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Exceptions;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Allows us to serialize/deserialize to/from objects

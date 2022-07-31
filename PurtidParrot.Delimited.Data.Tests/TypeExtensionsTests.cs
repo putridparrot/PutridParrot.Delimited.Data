@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Delimited.Data.Utils;
+using PutridParrot.Delimited.Data.Utils;
 using NUnit.Framework;
 
-namespace Delimited.Data.Tests
+namespace PutridParrot.Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
 	public class TypeExtensionsTests

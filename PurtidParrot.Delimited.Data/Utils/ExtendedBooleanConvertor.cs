@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Delimited.Data.Utils
+namespace PutridParrot.Delimited.Data.Utils
 {
 	/// <summary>
 	/// Allows serialization code to read Y/N and true/false

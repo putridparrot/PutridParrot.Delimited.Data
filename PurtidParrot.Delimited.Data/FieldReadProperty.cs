@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Delimited.Data.Attributes;
+using PutridParrot.Delimited.Data.Attributes;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	[Serializable]
 	public class FieldReadProperty

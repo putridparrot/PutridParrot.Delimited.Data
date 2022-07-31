@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Exceptions;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Gives the capability of reading delimiter separated data. It requires a StreamReader to actual

@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Exceptions;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Low-level reader, simply used to reading rows of data 

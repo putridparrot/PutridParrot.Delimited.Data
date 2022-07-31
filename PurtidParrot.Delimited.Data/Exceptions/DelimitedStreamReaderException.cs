@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Delimited.Data.Exceptions
+namespace PutridParrot.Delimited.Data.Exceptions
 {
 	[Serializable, ExcludeFromCodeCoverage]
 	public class DelimitedStreamReaderException : Exception

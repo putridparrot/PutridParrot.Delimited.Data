@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
-using Delimited.Data.Utils;
+using PutridParrot.Delimited.Data.Utils;
 
-namespace Delimited.Data
+namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
 	/// Allows a row of delimited data to be accessed using column heading names

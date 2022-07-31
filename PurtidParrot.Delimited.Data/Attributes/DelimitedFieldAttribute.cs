@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Delimited.Data.Attributes
+namespace PutridParrot.Delimited.Data.Attributes
 {
 	/// <summary>
 	/// Base class for read/writer data field attributes. Declared as abstract to ensure it
