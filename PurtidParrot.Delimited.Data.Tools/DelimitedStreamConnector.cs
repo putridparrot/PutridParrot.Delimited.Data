@@ -53,5 +53,4 @@ namespace Delimited.Data.Tools
 			}
 		}
 	}
-
 }

@@ -29,6 +29,6 @@
     <PackageReference Include="PowerArgs" Version="3.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Delimited.Data\Delimited.Data.csproj" />
+    <ProjectReference Include="..\PurtidParrot.Delimited.Data\PurtidParrot.Delimited.Data.csproj" />
   </ItemGroup>
 </Project>

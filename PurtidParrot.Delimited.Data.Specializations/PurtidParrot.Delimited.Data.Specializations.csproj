@@ -7,6 +7,6 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Delimited.Data\Delimited.Data.csproj" />
+    <ProjectReference Include="..\PurtidParrot.Delimited.Data\PurtidParrot.Delimited.Data.csproj" />
   </ItemGroup>
 </Project>
