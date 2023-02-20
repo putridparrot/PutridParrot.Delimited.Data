@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security;
 using System.Text;
@@ -70,7 +71,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			var reader = new StreamReader(ms);
 			var result = reader.ReadToEnd();
 
-			Assert.AreEqual("Hello,World\r\n", result);
+			Assert.AreEqual($"Hello,World{Environment.NewLine}", result);
 		}
 
         [Test]

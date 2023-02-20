@@ -82,7 +82,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			var reader = new StreamReader(ms);
 			var output = reader.ReadToEnd();
 
-			var split = output.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+			var split = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
 			ms.ForceClose();
 

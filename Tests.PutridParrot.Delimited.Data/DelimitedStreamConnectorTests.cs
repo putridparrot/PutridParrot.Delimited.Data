@@ -56,7 +56,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			ms.ForceClose();
 
-			Assert.AreEqual("Hello\tWorld\r\n", result);
+			Assert.AreEqual($"Hello\tWorld{Environment.NewLine}", result);
 		}
 
 		[Test]
@@ -76,7 +76,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			ms.ForceClose();
 
-			Assert.AreEqual("Hello\tWorld\r\n", result);
+			Assert.AreEqual($"Hello\tWorld{Environment.NewLine}", result);
 		}
 	}
 }

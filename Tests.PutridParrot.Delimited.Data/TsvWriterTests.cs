@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using PutridParrot.Delimited.Data.Exceptions;
@@ -69,7 +70,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			var reader = new StreamReader(ms);
 			var result = reader.ReadToEnd();
 
-			Assert.AreEqual("Hello\tWorld\r\n", result);
+			Assert.AreEqual($"Hello\tWorld{Environment.NewLine}", result);
 		}
 
 		[Test]
