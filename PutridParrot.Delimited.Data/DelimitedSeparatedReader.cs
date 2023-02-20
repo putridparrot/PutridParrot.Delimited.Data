@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using PutridParrot.Delimited.Data.Exceptions;
@@ -32,28 +31,24 @@ namespace PutridParrot.Delimited.Data
 			{
 				throw new DelimitedReaderException("The options need to be supplied and with a delimiter set");
 			}
-			//Contract.Requires<NullReferenceException>(Options != null && 
-			//	Options.Delimiter != default(char), 
-			//	"The options need to be supplied and with a delimiter set");
 
 			var line = reader.ReadLine();
 			return line == null ? null : Split(line, Options.Delimiter, Options.Qualifier);
         }
 
-		[SuppressMessage("Microsoft.Globalization", "CA1307:SpecifyStringComparison", MessageId = "System.String.StartsWith(System.String)", Justification = "We're testing for a null in essence, so shouldn't worry about locale")]
 		private static IList<string> Split(string line, char delimiter, char qualifier)
 		{
 			if (line == null)
 				throw new ArgumentNullException(nameof(line));
 
 			// NULL is used to suggest the EOF, so 
-			if (line.StartsWith("\0"))
-			{
-				return null;
-			}
+			//if (line.StartsWith("\0"))
+			//{
+			//	return null;
+			//}
 
 			var results = new List<string>();
-			int position = -1;
+			var position = -1;
 			while (position < line.Length)
 			{
 				results.Add(Parse(line, delimiter, qualifier, ref position));

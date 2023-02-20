@@ -73,7 +73,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			Assert.AreEqual("Hello,World\r\n", result);
 		}
 
-		[Test]
+        [Test]
 		public void CsvReader_CheckOptionsSetterGetter()
 		{
 			var options = new DelimitedOptions('.');

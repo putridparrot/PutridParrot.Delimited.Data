@@ -68,7 +68,17 @@ namespace PutridParrot.Delimited.Data.Tests
 			Assert.AreEqual("World", csv[1]);
 		}
 
-		[Test]
+        [Test]
+        public void CsvReader_ReadLine_EmptyData()
+        {
+            var reader = new CsvReader(Utils.ToStream(""));
+
+            var csv = reader.ReadLine();
+
+			Assert.IsNull(csv);
+        }
+
+        [Test]
 		public void CsvReader_ReadOneItemWithQuotes()
 		{
 			var reader = new CsvReader(Utils.ToStream("\"Hello, World\""));

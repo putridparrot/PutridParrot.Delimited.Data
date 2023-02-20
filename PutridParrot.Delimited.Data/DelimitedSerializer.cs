@@ -53,10 +53,9 @@ namespace PutridParrot.Delimited.Data
 			return new FieldWriteProperty(propertyInfo, attribute);
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static void Serialize(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream, IList<T> list, DelimitedSerializeOptions options)
 		{
-			List<FieldWriteProperty> attributes = options != null && options.Mappings != null ? new List<FieldWriteProperty>(options.Mappings) :
+			var attributes = options != null && options.Mappings != null ? new List<FieldWriteProperty>(options.Mappings) :
 				GetAssociations<FieldWriteProperty, DelimitedFieldWriteAttribute>(typeof(T), WriteAttributeFactory);
 
 			attributes.Sort((a, b) =>
@@ -69,29 +68,28 @@ namespace PutridParrot.Delimited.Data
 				return a.Value.ColumnIndex - b.Value.ColumnIndex;
 			});
 
-			using (var writer = new DelimitedStreamWriter(delimiterSeparatedWriter, stream))
-			{
-				if (options != null && options.IncludeHeadings)
-				{
-					writer.WriteLine(attributes.Select(association => association.Value.Heading));
-				}
+            using var writer = new DelimitedStreamWriter(delimiterSeparatedWriter, stream);
 
-				if (list != null)
-				{
-					foreach (T t in list)
-					{
-						Serialize(writer, t, attributes);
-					}
-				}
-			}
-		}
+            if (options != null && options.IncludeHeadings)
+            {
+                writer.WriteLine(attributes.Select(association => association.Value.Heading));
+            }
+
+            if (list != null)
+            {
+                foreach (T t in list)
+                {
+                    Serialize(writer, t, attributes);
+                }
+            }
+        }
 
 		private static void Serialize(DelimitedStreamWriter writer, T instance, List<FieldWriteProperty> attributes)
 		{
 			IList<string> items = new List<string>(attributes.Count);
-			foreach (FieldWriteProperty association in attributes)
+			foreach (var association in attributes)
 			{
-				object value = association.Key.GetValue(instance, null);
+				var value = association.Key.GetValue(instance, null);
 				items.Add(value != null ? value.ToString() : String.Empty);
 			}
 			writer.WriteLine(items);
@@ -197,7 +195,6 @@ namespace PutridParrot.Delimited.Data
 			return properties;
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static IList<FieldReadProperty> GenerateReadMappings(Stream mappingStream)
 		{
 			return IterateOverMappingStream(mappingStream, (properties, attributes) => 
@@ -223,7 +220,6 @@ namespace PutridParrot.Delimited.Data
 				});
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static IList<FieldWriteProperty> GenerateWriteMappings(Stream mappingStream)
 		{
 			return IterateOverMappingStream(mappingStream, (properties, attributes) => 
@@ -244,34 +240,29 @@ namespace PutridParrot.Delimited.Data
 				});
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, string data)
 		{
 			return Deserialize(delimiterSeparatedReader, data, null);
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, string data, DelimitedDeserializeOptions options)
-		{
-			using (var memoryStream = new MemoryStream())
-			{
-				memoryStream.Write(Encoding.ASCII.GetBytes(data), 0, data.Length);
-				memoryStream.Seek(0, SeekOrigin.Begin);
+        {
+            using var memoryStream = new MemoryStream();
 
-				foreach (var item in Deserialize(delimiterSeparatedReader, memoryStream, options))
-				{
-					yield return item;
-				}
-			}
-		}
+            memoryStream.Write(Encoding.ASCII.GetBytes(data), 0, data.Length);
+            memoryStream.Seek(0, SeekOrigin.Begin);
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+            foreach (var item in Deserialize(delimiterSeparatedReader, memoryStream, options))
+            {
+                yield return item;
+            }
+        }
+
 		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream)
 		{
 			return Deserialize(delimiterSeparatedReader, stream, null);
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, DelimitedDeserializeOptions options)
 		{
 			var attributes = options != null && options.Mappings != null ? options.Mappings :
@@ -289,102 +280,101 @@ namespace PutridParrot.Delimited.Data
 				}
 			}
 
-			using (var reader = new DelimitedStreamReader(delimiterSeparatedReader, stream))
-			{
-				// remove any "ignore rows"
-				if (options != null && options.IgnoreFirstNRows > 0)
-				{
-					var nRow = 0;
-					while (nRow < options.IgnoreFirstNRows && reader.ReadLine() != null)
-					{
-						nRow++;
-					}
-				}
+            using var reader = new DelimitedStreamReader(delimiterSeparatedReader, stream);
 
-				if (options != null && !options.UseHeadings)
-				{
-					// we don't want to have to create this dummy every time, so create here and set-up later
-					var dummy = new FieldReadProperty(null, new DelimitedFieldReadAttribute());
+            // remove any "ignore rows"
+            if (options != null && options.IgnoreFirstNRows > 0)
+            {
+                var nRow = 0;
+                while (nRow < options.IgnoreFirstNRows && reader.ReadLine() != null)
+                {
+                    nRow++;
+                }
+            }
 
-					IList<string> fields;
-					while ((fields = reader.ReadLine()) != null)
-					{
-						var newItem = new T();
-						for (var i = 0; i < fields.Count; i++)
-						{
-							dummy.Value.ColumnIndex = i;
-							ApplyToProperty(attributes, i, fields, dummy, newItem);
-						}
-						yield return newItem;
-					}
-				}
-				else
-				{
-					var headings = reader.ReadLine();
-					if (headings != null)
-					{
-						// we don't want to have to create this dummy every time, so create here and set-up later
-						var dummy = new FieldReadProperty(null, new DelimitedFieldReadAttribute());
+            if (options != null && !options.UseHeadings)
+            {
+                // we don't want to have to create this dummy every time, so create here and set-up later
+                var dummy = new FieldReadProperty(null, new DelimitedFieldReadAttribute());
 
-						var hasHeadings = false;
-						foreach (var heading in headings)
-						{
-							dummy.Value.Heading = heading;
-							var pos = GetColumnHeadingIndex(attributes, dummy);
-							if (pos >= 0)
-							{
-								hasHeadings = true;
-								break;
-							}
-						}
+                IList<string> fields;
+                while ((fields = reader.ReadLine()) != null)
+                {
+                    var newItem = new T();
+                    for (var i = 0; i < fields.Count; i++)
+                    {
+                        dummy.Value.ColumnIndex = i;
+                        ApplyToProperty(attributes, i, fields, dummy, newItem);
+                    }
+                    yield return newItem;
+                }
+            }
+            else
+            {
+                var headings = reader.ReadLine();
+                if (headings != null)
+                {
+                    // we don't want to have to create this dummy every time, so create here and set-up later
+                    var dummy = new FieldReadProperty(null, new DelimitedFieldReadAttribute());
 
-						if (!hasHeadings)
-						{
-							throw new DelimitedSerializationException("Expected to find heading names within the first row of the data but none were found.");
-						}
+                    var hasHeadings = false;
+                    foreach (var heading in headings)
+                    {
+                        dummy.Value.Heading = heading;
+                        var pos = GetColumnHeadingIndex(attributes, dummy);
+                        if (pos >= 0)
+                        {
+                            hasHeadings = true;
+                            break;
+                        }
+                    }
 
-						IEnumerable<string> fields;
-						while ((fields = reader.ReadLine()) != null)
-						{
-							if (options != null && options.IgnoreEmptyRows)
-							{
-								if (fields.All(String.IsNullOrEmpty))
-									continue;
-							}
+                    if (!hasHeadings)
+                    {
+                        throw new DelimitedSerializationException("Expected to find heading names within the first row of the data but none were found.");
+                    }
 
-                            var fieldCount = fields.Count();
-                            var newItem = new T();
-							for (var i = 0; i < headings.Count; i++)
-							{
-								if (i < fieldCount)
-								{
-									dummy.Value.Heading = headings.ElementAt(i);
-									ApplyToProperty(attributes, i, fields, dummy, newItem);
-								}
-							}
-							yield return newItem;
-							if (!AreSet(required, true))
-							{
-								var sb = new StringBuilder("One or more required fields were not supplied. Requires ");
-								var firstItem = false;
-								foreach (var a in required.Keys.Where(a => required[a] == false))
+                    IEnumerable<string> fields;
+                    while ((fields = reader.ReadLine()) != null)
+                    {
+                        if (options != null && options.IgnoreEmptyRows)
+                        {
+                            if (fields.All(String.IsNullOrEmpty))
+                                continue;
+                        }
+
+                        var fieldCount = fields.Count();
+                        var newItem = new T();
+                        for (var i = 0; i < headings.Count; i++)
+                        {
+                            if (i < fieldCount)
+                            {
+                                dummy.Value.Heading = headings.ElementAt(i);
+                                ApplyToProperty(attributes, i, fields, dummy, newItem);
+                            }
+                        }
+                        yield return newItem;
+                        if (!AreSet(required, true))
+                        {
+                            var sb = new StringBuilder("One or more required fields were not supplied. Requires ");
+                            var firstItem = false;
+                            foreach (var a in required.Keys.Where(a => required[a] == false))
+                            {
+                                if (firstItem)
                                 {
-                                    if (firstItem)
-                                    {
-                                        sb.Append(", ");
-                                    }
-                                    sb.Append(a.Value.Heading);
-                                    firstItem = true;
+                                    sb.Append(", ");
                                 }
-								throw new DelimitedSerializationException(sb.ToString());
-							}
-							// clear the required fields
-							Clear(required);
-						}
-					}
-				}
-			}
-		}
+                                sb.Append(a.Value.Heading);
+                                firstItem = true;
+                            }
+                            throw new DelimitedSerializationException(sb.ToString());
+                        }
+                        // clear the required fields
+                        Clear(required);
+                    }
+                }
+            }
+        }
 
 		private static void ApplyToProperty(IList<FieldReadProperty> attributes, int i, IEnumerable<string> fields, FieldReadProperty dummy, T newItem)
 		{

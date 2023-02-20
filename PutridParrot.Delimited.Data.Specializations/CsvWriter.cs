@@ -7,7 +7,6 @@ namespace PutridParrot.Delimited.Data.Specializations
 	/// <summary>
 	/// A specialization of a DelimitedStreamWriter, set up to handle comma separated value streams
 	/// </summary>
-	[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Csv", Justification = "Valid acronym for Comma Separated Value")]
 	public class CsvWriter : DelimitedStreamWriter
 	{
 		public CsvWriter(Stream stream) :
@@ -27,7 +26,6 @@ namespace PutridParrot.Delimited.Data.Specializations
 		}
 
 		[ExcludeFromCodeCoverage]
-		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
 		public CsvWriter(string path, Encoding encoding) :
 			this(new FileStream(path, FileMode.Create, FileAccess.Write), encoding)
 		{

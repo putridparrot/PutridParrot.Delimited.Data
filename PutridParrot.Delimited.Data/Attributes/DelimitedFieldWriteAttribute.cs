@@ -7,8 +7,7 @@ namespace PutridParrot.Delimited.Data.Attributes
 	/// Marks a property or field as a writable data field.
 	/// </summary>
 	[ExcludeFromCodeCoverage,
-	SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"),
-	AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+	AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class DelimitedFieldWriteAttribute : DelimitedFieldAttribute
 	{
 		public DelimitedFieldWriteAttribute()

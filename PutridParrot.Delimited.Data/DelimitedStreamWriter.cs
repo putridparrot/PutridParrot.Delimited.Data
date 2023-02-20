@@ -12,13 +12,9 @@ namespace PutridParrot.Delimited.Data
 	/// </summary>
 	public class DelimitedStreamWriter : IDisposable
 	{
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected Stream Stream;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected StreamWriter Writer;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected IDelimitedSeparatedWriter DsWriter;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected bool Disposed;
 
 		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream) :
@@ -44,7 +40,6 @@ namespace PutridParrot.Delimited.Data
 		}
 
 		[ExcludeFromCodeCoverage]
-		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
 		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, string path, Encoding encoding) :
 			this(delimiterSeparatedWriter, new FileStream(path, FileMode.Create, FileAccess.Write), encoding)
 		{
@@ -88,7 +83,6 @@ namespace PutridParrot.Delimited.Data
             Writer?.Flush();
         }
 
-		[SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StreamWriter")]
 		public void Write(IEnumerable<string> data)
 		{
 			if (Writer == null)

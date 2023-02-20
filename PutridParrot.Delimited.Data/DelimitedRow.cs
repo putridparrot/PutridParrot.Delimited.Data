@@ -98,13 +98,12 @@ namespace PutridParrot.Delimited.Data
 		{
 			if (binder == null)
 			{
-				throw new ArgumentNullException("binder");
+				throw new ArgumentNullException(nameof(binder));
 			}
 
 			result = null;
 
-			string field;
-			if (GetField(binder.Name, out field))
+            if (GetField(binder.Name, out var field))
 			{
 				result = TypeExtensions.ConvertToInferredType(field, CultureInfo);
 				return true;

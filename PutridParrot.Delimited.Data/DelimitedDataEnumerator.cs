@@ -36,18 +36,17 @@ namespace PutridParrot.Delimited.Data
 		/// <param name="options">Options for how the deserializer should handle data</param>
 		/// <returns>An IEnumerable representing the dynamic row data</returns>
 		public static IEnumerable Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, string data, DelimitedDeserializeOptions options)
-		{
-			using (var memoryStream = new MemoryStream())
-			{
-				memoryStream.Write(Encoding.ASCII.GetBytes(data), 0, data.Length);
-				memoryStream.Seek(0, SeekOrigin.Begin);
+        {
+            using var memoryStream = new MemoryStream();
 
-				foreach (var line in Deserialize(delimiterSeparatedReader, memoryStream, options))
-				{
-					yield return line;
-				}
-			}
-		}
+            memoryStream.Write(Encoding.ASCII.GetBytes(data), 0, data.Length);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            foreach (var line in Deserialize(delimiterSeparatedReader, memoryStream, options))
+            {
+                yield return line;
+            }
+        }
 		/// <summary>
 		/// Allows us to deserialize using the supplied reader and generates an IEnumerable 
 		/// of dynamic data.
@@ -78,49 +77,47 @@ namespace PutridParrot.Delimited.Data
 		/// <param name="options">Options for how the deserializer should handle data</param>
 		/// <returns>An IEnumerable representing the dynamic row data</returns>
 		public static IEnumerable Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, DelimitedDeserializeOptions options)
-		{
-			using (var reader = new DelimitedStreamReader(delimiterSeparatedReader, stream))
-			{
-				// remove any "ignore rows"
-				if (options != null && options.IgnoreFirstNRows > 0)
-				{
-					var nRow = 0;
-					while (nRow < options.IgnoreFirstNRows && reader.ReadLine() != null)
-					{
-						nRow++;
-					}
-				}
+        {
+            using var reader = new DelimitedStreamReader(delimiterSeparatedReader, stream);
+            // remove any "ignore rows"
+            if (options != null && options.IgnoreFirstNRows > 0)
+            {
+                var nRow = 0;
+                while (nRow < options.IgnoreFirstNRows && reader.ReadLine() != null)
+                {
+                    nRow++;
+                }
+            }
 
-				if (options != null && !options.UseHeadings)
-				{
-					IEnumerable<string> fields;
-					while ((fields = reader.ReadLine()) != null)
-					{
-						var f = fields.ToArray();
-						yield return new DelimitedRow(CreateColumnHeadings(f.Length), f);
-					}
-				}
-				else
-				{
-					IEnumerable<string> headings = reader.ReadLine();
-					if (headings != null)
-					{
-						var columnHeadings = headings.ToArray();
+            if (options != null && !options.UseHeadings)
+            {
+                IEnumerable<string> fields;
+                while ((fields = reader.ReadLine()) != null)
+                {
+                    var f = fields.ToArray();
+                    yield return new DelimitedRow(CreateColumnHeadings(f.Length), f);
+                }
+            }
+            else
+            {
+                IEnumerable<string> headings = reader.ReadLine();
+                if (headings != null)
+                {
+                    var columnHeadings = headings.ToArray();
 
-						IEnumerable<string> fields;
-						while ((fields = reader.ReadLine()) != null)
-						{
-							if (options != null && options.IgnoreEmptyRows)
-							{
-								if (fields.All(String.IsNullOrEmpty))
-									continue;
-							}
+                    IEnumerable<string> fields;
+                    while ((fields = reader.ReadLine()) != null)
+                    {
+                        if (options != null && options.IgnoreEmptyRows)
+                        {
+                            if (fields.All(String.IsNullOrEmpty))
+                                continue;
+                        }
 
-							yield return new DelimitedRow(columnHeadings, fields.ToArray());
-						}
-					}
-				}
-			}
-		}
+                        yield return new DelimitedRow(columnHeadings, fields.ToArray());
+                    }
+                }
+            }
+        }
 	}
 }
