@@ -15,7 +15,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 		public static Stream ToStream(string data, Encoding encoding)
 		{
-			byte[] bytes = encoding.GetBytes(data);
+			var bytes = encoding.GetBytes(data);
 
 			var ms = new MemoryStream();
 			ms.Write(bytes, 0, bytes.Length);
@@ -24,5 +24,4 @@ namespace PutridParrot.Delimited.Data.Tests
 			return ms;
 		}
 	}
-
 }

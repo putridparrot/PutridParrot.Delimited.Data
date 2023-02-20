@@ -73,16 +73,16 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			var ms = new MyStream();
 
-			IList<Person> items = Get();
+			var items = Get();
 
 			TsvSerializer<Person>.Serialize(ms, items, new DelimitedSerializeOptions {IncludeHeadings = true});
 
 			ms.Position = 0;
 
 			var reader = new StreamReader(ms);
-			string output = reader.ReadToEnd();
+			var output = reader.ReadToEnd();
 
-			string[] split = output.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+			var split = output.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
 
 			ms.ForceClose();
 
@@ -93,9 +93,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize()
 		{
-			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11");
+			var ms = Utils.ToStream("Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11");
 
-			IList<Person> items =
+			var items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
 			Assert.AreEqual(1, items.Count);
@@ -107,7 +107,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_WithMissingHeader()
 		{
-			Stream ms = Utils.ToStream("20/11/2003\tRoad Runner\t11");
+			var ms = Utils.ToStream("20/11/2003\tRoad Runner\t11");
 
 			Assert.Throws<DelimitedSerializationException>(() =>
 			{
@@ -122,9 +122,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_UsingAlternateNames()
 		{
-			Stream ms = Utils.ToStream("U\tN\tA\r\n20/11/2003\tRoad Runner\t11");
+			var ms = Utils.ToStream("U\tN\tA\r\n20/11/2003\tRoad Runner\t11");
 
-			IList<Person> items =
+			var items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
 			Assert.AreEqual(1, items.Count);
@@ -136,9 +136,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_UsingBooleanYN()
 		{
-			Stream ms = Utils.ToStream("U\tN\tA\tE\tM\r\n20/11/2003\tRoad Runner\t11\tY\tN");
+			var ms = Utils.ToStream("U\tN\tA\tE\tM\r\n20/11/2003\tRoad Runner\t11\tY\tN");
 
-			IList<Person> items =
+			var items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
 			Assert.AreEqual(1, items.Count);
@@ -151,9 +151,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_UsingBoolean()
 		{
-			Stream ms = Utils.ToStream("U\tN\tA\tE\tM\r\n20/11/2003\tRoad Runner\t11\ttrue\tfalse");
+			var ms = Utils.ToStream("U\tN\tA\tE\tM\r\n20/11/2003\tRoad Runner\t11\ttrue\tfalse");
 
-			IList<Person> items =
+			var items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
 			Assert.AreEqual(1, items.Count);
@@ -166,9 +166,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_WithEmptyRows_DefaultIgnoreEmptyRows()
 		{
-			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n\t\t\r\n\t\t\r\n20/11/2003\tRoad Runner\t11\r\n\t\t\r\n");
+			var ms = Utils.ToStream("Updated\tName\tAge\r\n\t\t\r\n\t\t\r\n20/11/2003\tRoad Runner\t11\r\n\t\t\r\n");
 
-			IList<Person> items =
+			var items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions {UseHeadings = true}));
 
 			Assert.AreEqual(1, items.Count);
@@ -180,9 +180,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_WithEmptyRows_IgnoreEmptyRowsSetToFalse()
 		{
-			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n\t\t\r\n\t\t\r\n20/11/2003\tRoad Runner\t11\r\n\t\t\r\n");
+			var ms = Utils.ToStream("Updated\tName\tAge\r\n\t\t\r\n\t\t\r\n20/11/2003\tRoad Runner\t11\r\n\t\t\r\n");
 
-			IList<Person> items =
+			var items =
 				new List<Person>(TsvSerializer<Person>.Deserialize(ms,
 					new DelimitedDeserializeOptions {UseHeadings = true, IgnoreEmptyRows = false}));
 
@@ -208,9 +208,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_AlternateDeserializeUsingStream_WithoutOptions()
 		{
-			Stream ms = Utils.ToStream("Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11\r\n");
+			var ms = Utils.ToStream("Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11\r\n");
 
-			IList<Person> items = new List<Person>(TsvSerializer<Person>.Deserialize(ms));
+			var items = new List<Person>(TsvSerializer<Person>.Deserialize(ms));
 
 			Assert.AreEqual(1, items.Count);
 
@@ -224,7 +224,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			const string ms = "Updated\tName\tAge\r\n20/11/2003\tRoad Runner\t11\r\n";
 
-			IList<Person> items = new List<Person>(TsvSerializer<Person>.Deserialize(ms));
+			var items = new List<Person>(TsvSerializer<Person>.Deserialize(ms));
 
 			Assert.AreEqual(1, items.Count);
 

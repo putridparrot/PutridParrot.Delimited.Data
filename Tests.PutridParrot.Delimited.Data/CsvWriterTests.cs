@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Security;
 using System.Text;
 using PutridParrot.Delimited.Data.Exceptions;
 using PutridParrot.Delimited.Data.Specializations;
@@ -12,12 +13,12 @@ namespace PutridParrot.Delimited.Data.Tests
 	public class CsvWriterTests
 	{
 		[Test]
-		public void CsvWriter_Ctor_NonWriteableStream()
+		public void CsvWriter_Ctor_NonWritableStream()
 		{
 			var mock = new Mock<Stream>();
 			mock.Setup(s => s.CanWrite).Returns(false);
 
-			Assert.Throws<DelimitedStreamWriterException>(() => { CsvWriter writer = new CsvWriter(mock.Object); });
+			Assert.Throws<DelimitedStreamWriterException>(() => { var _ = new CsvWriter(mock.Object); });
 		}
 
 		[Test]
@@ -26,7 +27,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			var mock = new Mock<Stream>();
 			mock.Setup(s => s.CanWrite).Returns(false);
 
-			Assert.Throws<DelimitedStreamWriterException>(() => { CsvWriter writer = new CsvWriter(mock.Object, Encoding.ASCII); });
+			Assert.Throws<DelimitedStreamWriterException>(() => { var _ = new CsvWriter(mock.Object, Encoding.ASCII); });
 		}
 
 		[Test]
@@ -67,12 +68,12 @@ namespace PutridParrot.Delimited.Data.Tests
 			ms.Position = 0;
 
 			var reader = new StreamReader(ms);
-			string result = reader.ReadToEnd();
+			var result = reader.ReadToEnd();
 
 			Assert.AreEqual("Hello,World\r\n", result);
 		}
 
-		[Test]
+        [Test]
 		public void CsvReader_CheckOptionsSetterGetter()
 		{
 			var options = new DelimitedOptions('.');

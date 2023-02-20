@@ -9,7 +9,7 @@ namespace PutridParrot.Delimited.Data
 	public class DelimitedOptions
 	{
 		/// <summary>
-		/// 
+		/// Initializes the delimited options
 		/// </summary>
 		/// <param name="delimiter"></param>
 		/// <param name="qualifier"></param>
@@ -27,7 +27,7 @@ namespace PutridParrot.Delimited.Data
 		/// </summary>
 		public char Delimiter { get; set; }
 		/// <summary>
-		/// Gets/Sets the qualifier chacater
+		/// Gets/Sets the qualifier character
 		/// </summary>
 		public char Qualifier { get; set; }
 		/// <summary>

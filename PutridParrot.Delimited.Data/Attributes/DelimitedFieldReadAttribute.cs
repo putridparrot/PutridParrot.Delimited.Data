@@ -7,8 +7,7 @@ namespace PutridParrot.Delimited.Data.Attributes
 	/// Marks a property or field as a readable data field.
 	/// </summary>
 	[ExcludeFromCodeCoverage,
-	SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"),
-	AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+	AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class DelimitedFieldReadAttribute : DelimitedFieldAttribute
 	{
 		public DelimitedFieldReadAttribute()
@@ -40,5 +39,4 @@ namespace PutridParrot.Delimited.Data.Attributes
 		public bool Required { get; set; }
 		public string[] AlternateNames { get; set; }
 	}
-
 }

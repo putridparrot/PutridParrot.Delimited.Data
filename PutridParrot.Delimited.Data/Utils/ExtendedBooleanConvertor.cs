@@ -10,10 +10,9 @@ namespace PutridParrot.Delimited.Data.Utils
 	{
 		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
 		{
-			var s = value as string;
-			if (s != null)
+            if (value is string s)
 			{
-				string tmp = s.Trim();
+				var tmp = s.Trim();
 				// just going to add ability to understand N == False and Y == True
 				if (tmp.Equals("N", StringComparison.CurrentCultureIgnoreCase))
 					return false;

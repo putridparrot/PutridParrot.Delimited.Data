@@ -14,13 +14,13 @@ namespace PutridParrot.Delimited.Data
 	public class DelimitedStreamReader : IDisposable
 	{
 		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected Stream stream;
+		protected Stream Stream;
 		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected StreamReader reader;
+		protected StreamReader Reader;
 		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected IDelimitedSeparatedReader dsReader;
+		protected IDelimitedSeparatedReader DsReader;
 		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected bool disposed;
+		protected bool Disposed;
 
 		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream) :
 			this(delimiterSeparatedReader, stream, null)
@@ -29,22 +29,13 @@ namespace PutridParrot.Delimited.Data
 
 		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, Encoding encoding)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException("stream");
-			}
-			if (delimiterSeparatedReader == null)
-			{
-				throw new ArgumentNullException("delimiterSeparatedReader");
-			}
-
-			dsReader = delimiterSeparatedReader;
-			this.stream = stream;
+            DsReader = delimiterSeparatedReader ?? throw new ArgumentNullException(nameof(delimiterSeparatedReader));
+			Stream = stream ?? throw new ArgumentNullException(nameof(stream));
 			if (!stream.CanRead)
 			{
 				throw new DelimitedStreamReaderException("Unable to read from the supplied stream");
 			}
-			reader = (encoding != null) ? new StreamReader(stream, encoding) : new StreamReader(stream);
+			Reader = encoding != null ? new StreamReader(stream, encoding) : new StreamReader(stream);
 		}
 
 		[ExcludeFromCodeCoverage]
@@ -68,43 +59,43 @@ namespace PutridParrot.Delimited.Data
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposed)
+			if (!Disposed)
 			{
 				if (disposing)
 				{
 					Close();
 				}
 			}
-			disposed = true;
+			Disposed = true;
 		}
 
 		public void Close()
 		{
-			if (reader != null)
+			if (Reader != null)
 			{
-				reader.Close();
-				reader = null;
-				stream = null;
+				Reader.Close();
+				Reader = null;
+				Stream = null;
 			}
-			else if (stream != null)
+			else if (Stream != null)
 			{
-				stream.Close();
-				stream = null;
+				Stream.Close();
+				Stream = null;
 			}
 		}
 
 		[SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StreamReader")]
 		public virtual IList<string> ReadLine()
 		{
-			if (reader == null)
+			if (Reader == null)
 				throw new DelimitedStreamReaderException("StreamReader is null");
 
-			return dsReader.Read(reader);
+			return DsReader.Read(Reader);
 		}
 
 		public IList<string> ReadLine(bool ignoreEmptyRows)
 		{
-			IList<string> line = ReadLine();
+			var line = ReadLine();
 
 			if (ignoreEmptyRows)
 			{

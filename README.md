@@ -2,15 +2,21 @@
 
 [![Build](https://github.com/putridparrot/PutridParrot.Delimited.Data/actions/workflows/build.yml/badge.svg)](https://github.com/putridparrot/PutridParrot.Delimited.Data/actions/workflows/build.yml)
 
-Delimited.Data was designed to allow me to interact CSV, TSV etc. data. There are specializations within the Delimited.Data.Specializations assembly for Csv and Tsv but you can easily create your own on top of the Delimited.Data class.
+Delimited.Data was designed to allow the user to interact CSV, TSV etc. data. 
 
-Let's start by looking at the most obvious specializations - those which interact with CSV.
+Everything happens within the Delimited.Data.Specializations assembly, but we have wrapper specializations for Csv and Tsv 
+which you can easily use or create your own on top of the Delimited.Data class.
 
-I've created several ways of dealing with the parsing of delimited data, from a low level reader to a version which serializes/deserializes to objects and finally a dynamic way of using CSV which allows me to use LINQ to make the CSV querable.
+Let's start by looking at the most obvious of the specializations - those which interact with CSV.
+
+We have several ways of dealing with the parsing of delimited data, from a low level reader to a version which 
+serializes/deserializes to objects and finally a dynamic way of using CSV which allows me to use LINQ to make 
+the CSV querable.
 
 ### CsvReader/CsvWriter
 
-Inheriting from the DelimitedStreamReader/DelimitedStreamWriter these offer basic functionality allowing you to read a line of delimited data at a time or writing a line at a time. These classes will parse the data and return an IList of string items, in the case of the reader. The writer takes an IEnumerable of strings and writes them in the format of the delimited data. In this case reading and writing CSV.
+Inheriting from the DelimitedStreamReader/DelimitedStreamWriter these offer basic functionality allowing you to read a line of delimited data at a time or writing a line at a time. These classes will parse 
+the data and return an IList of string items, in the case of the reader. The writer takes an IEnumerable of strings and writes them in the format of the delimited data. In this case reading and writing CSV.
 
 ```
 var reader = new CsvReader(stream);

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
+﻿using System.Configuration;
 
 namespace PutridParrot.Delimited.Data
 {
@@ -23,9 +16,9 @@ namespace PutridParrot.Delimited.Data
 	{
 		public DelimitedSerializerMappingsElementCollection Mappings
 		{
-			get { return (DelimitedSerializerMappingsElementCollection) this["DelimitedSerializerMappings"]; }
-			set { this["DelimitedSerializerMappings"] = value; } 
-		}
+			get => (DelimitedSerializerMappingsElementCollection) this["DelimitedSerializerMappings"];
+            set => this["DelimitedSerializerMappings"] = value;
+        }
 	}
 
 	public class DelimitedSerializerMappingsElementCollection : ConfigurationElementCollection
@@ -40,33 +33,30 @@ namespace PutridParrot.Delimited.Data
 			return ((DelimitedSerializerMappingsElement) element).Property;
 		}
 
-		protected override string ElementName
-		{
-			get { return "Mapping"; }
-		}
-	}
+		protected override string ElementName => "Mapping";
+    }
 
 	public class DelimitedSerializerMappingsElement : ConfigurationElement
 	{
 		[ConfigurationProperty("Heading", IsRequired = false)]
 		public string Heading
 		{
-			get { return (string) this["Heading"]; }
-			set { this["Heading"] = value; }
-		}
+			get => (string) this["Heading"];
+            set => this["Heading"] = value;
+        }
 
 		[ConfigurationProperty("ColumnIndex", IsRequired = false)]
 		public string ColumnIndex
 		{
-			get { return (string)this["ColumnIndex"]; }
-			set { this["ColumnIndex"] = value; }
-		}
+			get => (string)this["ColumnIndex"];
+            set => this["ColumnIndex"] = value;
+        }
 
 		[ConfigurationProperty("Property", IsRequired = true)]
 		public string Property
 		{
-			get { return (string)this["Property"]; }
-			set { this["Property"] = value; }
-		}
+			get => (string)this["Property"];
+            set => this["Property"] = value;
+        }
 	}
 }

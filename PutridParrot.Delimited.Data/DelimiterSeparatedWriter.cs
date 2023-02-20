@@ -20,7 +20,7 @@ namespace PutridParrot.Delimited.Data
 
 		private string Escape(string data)
 		{
-			string qualifier = Options.Qualifier == default(char) ? "\"" : Options.Qualifier.ToString(CultureInfo.CurrentCulture);
+			var qualifier = Options.Qualifier == default(char) ? "\"" : Options.Qualifier.ToString(CultureInfo.CurrentCulture);
 
 			return data != null && (Options.QualifyAll || data.IndexOfAny(String.Format("{0}{1}\x0A\x0D", qualifier, Options.Delimiter).ToCharArray()) > -1)
 					? qualifier + data.Replace(qualifier, String.Format("{0}{0}", qualifier)) + qualifier : data;
@@ -30,19 +30,19 @@ namespace PutridParrot.Delimited.Data
 		{
 			if (writer == null)
 			{
-				throw new ArgumentNullException("writer");
+				throw new ArgumentNullException(nameof(writer));
 			}
 			if (data == null)
 			{
-				throw new ArgumentNullException("data");
+				throw new ArgumentNullException(nameof(data));
 			}
 
-			IList<string> list = new List<string>(data);
+			var list = new List<string>(data);
 
-			int i = 0;
-			int count = list.Count;
+			var i = 0;
+			var count = list.Count;
 
-			foreach (string item in list)
+			foreach (var item in list)
 			{
 				writer.Write(Escape(item));
 				if (i++ < count - 1)

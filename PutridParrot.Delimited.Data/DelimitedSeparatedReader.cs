@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using PutridParrot.Delimited.Data.Exceptions;
@@ -25,41 +24,31 @@ namespace PutridParrot.Delimited.Data
 		{
 			if (reader == null)
 			{
-				throw new ArgumentNullException("reader");
+				throw new ArgumentNullException(nameof(reader));
 			}
 
 			if (Options == null || Options.Delimiter == default(char))
 			{
 				throw new DelimitedReaderException("The options need to be supplied and with a delimiter set");
 			}
-			//Contract.Requires<NullReferenceException>(Options != null && 
-			//	Options.Delimiter != default(char), 
-			//	"The options need to be supplied and with a delimiter set");
 
-			string line = reader.ReadLine();
-			if (line == null)
-			{
-				return null;
-			}
+			var line = reader.ReadLine();
+			return line == null ? null : Split(line, Options.Delimiter, Options.Qualifier);
+        }
 
-			return Split(line, Options.Delimiter, Options.Qualifier);
-		}
-
-		[SuppressMessage("Microsoft.Globalization", "CA1307:SpecifyStringComparison", MessageId = "System.String.StartsWith(System.String)", Justification = "We're testing for a null in essence, so shouldn't worry about locale")]
 		private static IList<string> Split(string line, char delimiter, char qualifier)
 		{
 			if (line == null)
-				throw new ArgumentNullException("line");
-			//Contract.Requires(line != null, "line");
+				throw new ArgumentNullException(nameof(line));
 
 			// NULL is used to suggest the EOF, so 
-			if (line.StartsWith("\0"))
-			{
-				return null;
-			}
+			//if (line.StartsWith("\0"))
+			//{
+			//	return null;
+			//}
 
 			var results = new List<string>();
-			int position = -1;
+			var position = -1;
 			while (position < line.Length)
 			{
 				results.Add(Parse(line, delimiter, qualifier, ref position));
@@ -77,7 +66,7 @@ namespace PutridParrot.Delimited.Data
 				return String.Empty;
 			}
 
-			int fromPos = startPosition + 1;
+			var fromPos = startPosition + 1;
 
 			// Determine if this is a qualifier field
 			if (line[fromPos] == qualifier)
@@ -88,15 +77,15 @@ namespace PutridParrot.Delimited.Data
 					return qualifier.ToString(CultureInfo.CurrentCulture);
 				}
 
-				string qualifierAsString = qualifier.ToString(CultureInfo.CurrentCulture);
+				var qualifierAsString = qualifier.ToString(CultureInfo.CurrentCulture);
 
-				int nextSingleQuote = FindQualifier(line, fromPos + 1, qualifier);
+				var nextSingleQuote = FindQualifier(line, fromPos + 1, qualifier);
 				startPosition = nextSingleQuote + 1;
-				string extracted = line.Substring(fromPos + 1, nextSingleQuote - fromPos - 1);
-				return extracted.Replace(String.Format("{0}{0}", qualifierAsString), qualifierAsString).Trim();
+				var extracted = line.Substring(fromPos + 1, nextSingleQuote - fromPos - 1);
+				return extracted.Replace($"{qualifierAsString}{qualifierAsString}", qualifierAsString).Trim();
 			}
 
-			int nextComma = line.IndexOf(delimiter, fromPos);
+			var nextComma = line.IndexOf(delimiter, fromPos);
 			if (nextComma == -1)
 			{
 				nextComma = startPosition = line.Length;
@@ -110,12 +99,12 @@ namespace PutridParrot.Delimited.Data
 
 		private static int FindQualifier(string data, int startFrom, char qualifier)
 		{
-			int i = startFrom - 1;
+			var i = startFrom - 1;
 			while (++i < data.Length)
 			{
 				if (data[i] == qualifier)
 				{
-					// If this is a double qualifer, bypass the chars
+					// If this is a double qualifier, bypass the chars
 					if (i < data.Length - 1 && (data[i + 1] == qualifier ||
 							data[i - 1] == '\\'))
 					{
@@ -128,5 +117,4 @@ namespace PutridParrot.Delimited.Data
 			return i;
 		}
 	}
-
 }

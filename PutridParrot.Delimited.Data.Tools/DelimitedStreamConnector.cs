@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace PutridParrot.Delimited.Data.Tools
 {
@@ -20,14 +19,14 @@ namespace PutridParrot.Delimited.Data.Tools
 		{
 			if (input == null)
 			{
-				throw new ArgumentNullException("input");
+				throw new ArgumentNullException(nameof(input));
 			}
 			if (output == null)
 			{
-				throw new ArgumentNullException("output");
+				throw new ArgumentNullException(nameof(output));
 			}
 
-			for (int i = 0; i < skip; i++)
+			for (var i = 0; i < skip; i++)
 			{
 				input.ReadLine();
 			}
@@ -41,9 +40,9 @@ namespace PutridParrot.Delimited.Data.Tools
 		}
 
 		[ExcludeFromCodeCoverage]
-		public static void Concat(string[] files, DelimitedOptions inputOptions, Encoding inputEncoding, DelimitedStreamWriter output, int skip)
+		public static void Concat(string[] files, DelimitedOptions inputOptions, DelimitedStreamWriter output, int skip)
 		{
-			foreach (string file in files)
+			foreach (var file in files)
 			{
 				if (File.Exists(file))
 				{

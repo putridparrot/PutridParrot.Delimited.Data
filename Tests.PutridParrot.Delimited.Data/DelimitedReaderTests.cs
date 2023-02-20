@@ -15,7 +15,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			Assert.Throws<ArgumentNullException>(() =>
 			{
-				using (var reader = new DelimitedStreamReader(null, Utils.ToStream("One|Two|Three")))
+				using (var _ = new DelimitedStreamReader(null, Utils.ToStream("One|Two|Three")))
 				{
 				}
 			});

@@ -12,7 +12,7 @@ namespace PutridParrot.Delimited.Data.Tests
 	public class TsvWriterTests
 	{
 		[Test]
-		public void TsvWriter_Ctor_NonWriteableStream()
+		public void TsvWriter_Ctor_NonWritableStream()
 		{
 			var mock = new Mock<Stream>();
 			mock.Setup(s => s.CanWrite).Returns(false);
@@ -67,7 +67,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			ms.Position = 0;
 
 			var reader = new StreamReader(ms);
-			string result = reader.ReadToEnd();
+			var result = reader.ReadToEnd();
 
 			Assert.AreEqual("Hello\tWorld\r\n", result);
 		}

@@ -69,16 +69,16 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			var ms = new MyStream();
 
-			IList<Person> items = Get();
+			var items = Get();
 
 			CsvSerializer<Person>.Serialize(ms, items, new DelimitedSerializeOptions { IncludeHeadings = true });
 
 			ms.Position = 0;
 
 			var reader = new StreamReader(ms);
-			string output = reader.ReadToEnd();
+			var output = reader.ReadToEnd();
 
-			string[] split = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			var split = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
 			ms.ForceClose();
 
@@ -89,7 +89,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize()
 		{
-			Stream ms = Utils.ToStream("Updated,Name,Age\r\n20/11/2003,Road Runner,11");
+			var ms = Utils.ToStream("Updated,Name,Age\r\n20/11/2003,Road Runner,11");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions { UseHeadings = true }));
 
@@ -102,11 +102,11 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_WithMissingHeader()
 		{
-			Stream ms = Utils.ToStream("20/11/2003,Road Runner,11");
+			var ms = Utils.ToStream("20/11/2003,Road Runner,11");
 
 			Assert.Throws<DelimitedSerializationException>(() =>
 			{
-				foreach (var line in CsvSerializer<Person>.Deserialize(ms,
+				foreach (var _ in CsvSerializer<Person>.Deserialize(ms,
 					new DelimitedDeserializeOptions { UseHeadings = true }))
 				{
 					// this should exception
@@ -117,7 +117,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_UsingAlternateNames()
 		{
-			Stream ms = Utils.ToStream("U,N,A\r\n20/11/2003,Road Runner,11");
+			var ms = Utils.ToStream("U,N,A\r\n20/11/2003,Road Runner,11");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions { UseHeadings = true }));
 
@@ -130,7 +130,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_UsingBooleanYN()
 		{
-			Stream ms = Utils.ToStream("U,N,A,E,M\r\n20/11/2003,Road Runner,11,Y,N");
+			var ms = Utils.ToStream("U,N,A,E,M\r\n20/11/2003,Road Runner,11,Y,N");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions { UseHeadings = true }));
 
@@ -144,7 +144,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_UsingBoolean()
 		{
-			Stream ms = Utils.ToStream("U,N,A,E,M\r\n20/11/2003,Road Runner,11,true,false");
+			var ms = Utils.ToStream("U,N,A,E,M\r\n20/11/2003,Road Runner,11,true,false");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions { UseHeadings = true }));
 
@@ -158,7 +158,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_WithEmptyRows_DefaultIgnoreEmptyRows()
 		{
-			Stream ms = Utils.ToStream("Updated,Name,Age\r\n,,\r\n,,\r\n20/11/2003,Road Runner,11\r\n,,\r\n");
+			var ms = Utils.ToStream("Updated,Name,Age\r\n,,\r\n,,\r\n20/11/2003,Road Runner,11\r\n,,\r\n");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions { UseHeadings = true }));
 
@@ -171,7 +171,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_WithEmptyRows_IgnoreEmptyRowsSetToFalse()
 		{
-			Stream ms = Utils.ToStream("Updated,Name,Age\r\n,,\r\n,,\r\n20/11/2003,Road Runner,11\r\n,,\r\n");
+			var ms = Utils.ToStream("Updated,Name,Age\r\n,,\r\n,,\r\n20/11/2003,Road Runner,11\r\n,,\r\n");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms, new DelimitedDeserializeOptions { UseHeadings = true, IgnoreEmptyRows = false }));
 
@@ -197,7 +197,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void Deserialize_AlternateDeserializeUsingStream_WithoutOptions()
 		{
-			Stream ms = Utils.ToStream("Updated,Name,Age\r\n20/11/2003,Road Runner,11\r\n");
+			var ms = Utils.ToStream("Updated,Name,Age\r\n20/11/2003,Road Runner,11\r\n");
 
 			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms));
 
@@ -213,7 +213,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			const string ms = "Updated,Name,Age\r\n20/11/2003,Road Runner,11\r\n";
 
-			IList<Person> items = new List<Person>(CsvSerializer<Person>.Deserialize(ms));
+			var items = new List<Person>(CsvSerializer<Person>.Deserialize(ms));
 
 			Assert.AreEqual(1, items.Count);
 

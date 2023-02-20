@@ -18,7 +18,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
+			var idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
@@ -34,7 +34,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
+			var idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content)))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
@@ -50,7 +50,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
+			var idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(content, new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
@@ -66,7 +66,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
+			var idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(content))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
@@ -82,7 +82,7 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
+			var idx = 0;
 			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
 				Assert.AreEqual(symbols[idx], row["Symbol"]);
@@ -166,5 +166,4 @@ namespace PutridParrot.Delimited.Data.Tests
 			});
 		}
 	}
-
 }

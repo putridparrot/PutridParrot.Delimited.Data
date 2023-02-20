@@ -33,5 +33,4 @@ namespace PutridParrot.Delimited.Data.Specializations
 			return DelimitedDataEnumerator.Deserialize(GetReader(), stream, options);
 		}
 	}
-
 }

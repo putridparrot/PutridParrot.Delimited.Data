@@ -6,7 +6,6 @@ namespace PutridParrot.Delimited.Data.Specializations
 	/// <summary>
 	/// The standard Tsv options
 	/// </summary>
-	[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Tsv", Justification = "Valid acronym for Tab Separated Value")]
 	public class TsvOptions : DelimitedOptions
 	{
 		[DebuggerStepThrough]

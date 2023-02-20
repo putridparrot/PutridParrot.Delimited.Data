@@ -61,16 +61,16 @@ namespace PutridParrot.Delimited.Data.Tests
 		public void TsvReader_ReadLine_MinimalTest()
 		{
 			// this is a minimal test as currently the code calls external class which should be tested
-			byte[] bytes = Encoding.ASCII.GetBytes("Hello\tWorld");
+			var bytes = Encoding.ASCII.GetBytes("Hello\tWorld");
 
 			var ms = new MemoryStream();
 			ms.Write(bytes, 0, bytes.Length);
 			ms.Seek(0, SeekOrigin.Begin);
 
 			var reader = new TsvReader(ms);
-			IEnumerable<string> tsv = reader.ReadLine();
+			var tsv = reader.ReadLine();
 
-			Assert.AreEqual(2, tsv.Count());
+			Assert.AreEqual(2, tsv.Count);
 			Assert.AreEqual("Hello", tsv.ElementAt(0));
 			Assert.AreEqual("World", tsv.ElementAt(1));
 		}

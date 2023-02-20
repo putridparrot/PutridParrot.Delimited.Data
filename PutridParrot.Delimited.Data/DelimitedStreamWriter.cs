@@ -12,14 +12,10 @@ namespace PutridParrot.Delimited.Data
 	/// </summary>
 	public class DelimitedStreamWriter : IDisposable
 	{
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected Stream stream;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected StreamWriter writer;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected IDelimitedSeparatedWriter dsWriter;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-		protected bool disposed;
+		protected Stream Stream;
+		protected StreamWriter Writer;
+		protected IDelimitedSeparatedWriter DsWriter;
+		protected bool Disposed;
 
 		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream) :
 			this(delimiterSeparatedWriter, stream, null)
@@ -28,18 +24,13 @@ namespace PutridParrot.Delimited.Data
 
 		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream, Encoding encoding)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException("stream");
-			}
-
-			dsWriter = delimiterSeparatedWriter;
-			this.stream = stream;
+            DsWriter = delimiterSeparatedWriter;
+			Stream = stream ?? throw new ArgumentNullException(nameof(stream));
 			if (!stream.CanWrite)
 			{
 				throw new DelimitedStreamWriterException("Unable to write to the supplied stream");
 			}
-			writer = (encoding != null) ? new StreamWriter(stream, encoding) : new StreamWriter(stream);
+			Writer = encoding != null ? new StreamWriter(stream, encoding) : new StreamWriter(stream);
 		}
 
 		[ExcludeFromCodeCoverage]
@@ -49,7 +40,6 @@ namespace PutridParrot.Delimited.Data
 		}
 
 		[ExcludeFromCodeCoverage]
-		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
 		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, string path, Encoding encoding) :
 			this(delimiterSeparatedWriter, new FileStream(path, FileMode.Create, FileAccess.Write), encoding)
 		{
@@ -63,53 +53,48 @@ namespace PutridParrot.Delimited.Data
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposed)
+			if (!Disposed)
 			{
 				if (disposing)
 				{
 					Close();
 				}
 			}
-			disposed = true;
+			Disposed = true;
 		}
 
 		public void Close()
 		{
-			if (writer != null)
+			if (Writer != null)
 			{
-				writer.Close();
-				writer = null;
-				stream = null;
+				Writer.Close();
+				Writer = null;
+				Stream = null;
 			}
-			else if (stream != null)
+			else if (Stream != null)
 			{
-				stream.Close();
-				stream = null;
+				Stream.Close();
+				Stream = null;
 			}
 		}
 
 		public void Flush()
-		{
-			if (writer != null)
-			{
-				writer.Flush();
-			}
-		}
+        {
+            Writer?.Flush();
+        }
 
-		[SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StreamWriter")]
 		public void Write(IEnumerable<string> data)
 		{
-			if (writer == null)
+			if (Writer == null)
 				throw new DelimitedStreamWriterException("StreamWriter is null");
 
-			dsWriter.Write(writer, data);
+			DsWriter.Write(Writer, data);
 		}
 
 		public void WriteLine(IEnumerable<string> data)
 		{
 			Write(data);
-			writer.WriteLine();
+			Writer.WriteLine();
 		}
 	}
-
 }

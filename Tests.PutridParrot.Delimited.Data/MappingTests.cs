@@ -55,14 +55,14 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateReadMappings_FromValidMappingsStartAndEndElements()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 							 "<DelimitedSerializerMappings>" +
 							 "   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"></Mapping>" +
 							 "   <Mapping Heading=\"Heading Name\" Property=\"Name\"></Mapping>" +
 							 "   <Mapping Heading=\"Heading Age\" Property=\"Age\"></Mapping>" +
 							 "</DelimitedSerializerMappings>");
 
-			IList<FieldReadProperty> mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms);
+			var mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms);
 			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
@@ -73,14 +73,14 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateWriteMappings_FromValidMappingsStartAndEndElements()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"></Mapping>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"></Mapping>" +
 								"   <Mapping Heading=\"Heading Age\" Property=\"Age\"></Mapping>" +
 								"</DelimitedSerializerMappings>");
 
-			IList<FieldWriteProperty> mappings = DelimitedSerializer<Person>.GenerateWriteMappings(ms);
+			var mappings = DelimitedSerializer<Person>.GenerateWriteMappings(ms);
 			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
@@ -91,14 +91,14 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateReadMappings_FromValidMappingsSingleElements()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"/>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"/>" +
 								"   <Mapping Heading=\"Heading Age\" Property=\"Age\"/>" +
 								"</DelimitedSerializerMappings>");
 
-			IList<FieldReadProperty> mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms);
+			var mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms);
 			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
@@ -109,14 +109,14 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateWriteMappings_FromValidMappingsSingleElements()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"/>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"/>" +
 								"   <Mapping Heading=\"Heading Age\" Property=\"Age\"/>" +
 								"</DelimitedSerializerMappings>");
 
-			IList<FieldWriteProperty> mappings = DelimitedSerializer<Person>.GenerateWriteMappings(ms);
+			var mappings = DelimitedSerializer<Person>.GenerateWriteMappings(ms);
 			Assert.AreEqual(3, mappings.Count);
 
 			Assert.NotNull(mappings.FirstOrDefault(m => m.Key.Name == "Updated" && m.Value.Heading == "Heading Updated"));
@@ -127,16 +127,16 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateReadMappings_AndDeserialize()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"/>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"/>" +
 								"   <Mapping Heading=\"Heading Age\" Property=\"Age\"/>" +
 								"</DelimitedSerializerMappings>");
 
-			Stream ds = Utils.ToStream("Heading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
+			var ds = Utils.ToStream("Heading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
 
-			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
+			var items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
 
 			Assert.AreEqual(1, items.Count);
 			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
@@ -147,16 +147,16 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateReadMappings_UsingIndicies_AndDeserialize()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping ColumnIndex=\"0\" Property=\"Updated\"/>" +
 								"   <Mapping ColumnIndex=\"1\" Property=\"Name\"/>" +
 								"   <Mapping ColumnIndex=\"2\" Property=\"Age\"/>" +
 								"</DelimitedSerializerMappings>");
 
-			Stream ds = Utils.ToStream("20/11/2003,Road Runner,11");
+			var ds = Utils.ToStream("20/11/2003,Road Runner,11");
 
-			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
+			var items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
 
 			Assert.AreEqual(1, items.Count);
 			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
@@ -167,7 +167,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateReadMappings_UsingIndiciesIgnoreOneRow_AndDeserialize()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"/>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"/>" +
@@ -175,9 +175,9 @@ namespace PutridParrot.Delimited.Data.Tests
 								"</DelimitedSerializerMappings>");
 
 			// assume an empty first line to the data, we want to ignore this
-			Stream ds = Utils.ToStream("\r\nHeading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
+			var ds = Utils.ToStream("\r\nHeading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
 
-			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, IgnoreFirstNRows = 1, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
+			var items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, IgnoreFirstNRows = 1, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }));
 
 			Assert.AreEqual(1, items.Count);
 			Assert.AreEqual(new DateTime(2003, 11, 20), items[0].Updated);
@@ -188,18 +188,18 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateReadMappings_AndDeserialize_WithMissingRequiredField_AndEnforceRequiredFieldsOn()
 		{
-			Stream ms = Utils.ToStream(
+			var ms = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\" Required=\"true\"/>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"/>" +
 								"   <Mapping Heading=\"Heading Age\" Property=\"Age\"/>" +
 								"</DelimitedSerializerMappings>");
 
-			Stream ds = Utils.ToStream("Heading Name,Heading Age\r\nRoad Runner,11");
+			var ds = Utils.ToStream("Heading Name,Heading Age\r\nRoad Runner,11");
 
 			Assert.Throws<DelimitedSerializationException>(() =>
 			{
-				foreach (var line in DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, EnforceRequiredFields = true, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }))
+				foreach (var _ in DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), ds, new DelimitedDeserializeOptions { UseHeadings = true, EnforceRequiredFields = true, Mappings = DelimitedSerializer<Person>.GenerateReadMappings(ms) }))
 				{
 					// should exception
 				}
@@ -209,26 +209,26 @@ namespace PutridParrot.Delimited.Data.Tests
 		[Test]
 		public void GenerateWriteMappings_AndSerialize()
 		{
-			Stream dataStream = Utils.ToStream("Heading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
+			var dataStream = Utils.ToStream("Heading Updated,Heading Name,Heading Age\r\n20/11/2003,Road Runner,11");
 
-			Stream mappingStream = Utils.ToStream(
+			var mappingStream = Utils.ToStream(
 								"<DelimitedSerializerMappings>" +
 								"   <Mapping Heading=\"Heading Updated\" Property=\"Updated\"/>" +
 								"   <Mapping Heading=\"Heading Name\" Property=\"Name\"/>" +
 								"   <Mapping Heading=\"Heading Age\" Property=\"Age\"/>" +
 								"</DelimitedSerializerMappings>");
 
-			IList<FieldReadProperty> readMappings = DelimitedSerializer<Person>.GenerateReadMappings(mappingStream);
+            var readMappings = DelimitedSerializer<Person>.GenerateReadMappings(mappingStream);
 			mappingStream.Position = 0;
-			IList<FieldWriteProperty> writeMappings = DelimitedSerializer<Person>.GenerateWriteMappings(mappingStream);
+			var writeMappings = DelimitedSerializer<Person>.GenerateWriteMappings(mappingStream);
 
-			IList<Person> items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), dataStream, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = readMappings }));
+			var items = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), dataStream, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = readMappings }));
 
 			var writeStream = new MyStream();
 			DelimitedSerializer<Person>.Serialize(new DelimitedSeparatedWriter(new CsvOptions()), writeStream, items, new DelimitedSerializeOptions { IncludeHeadings = true, Mappings = writeMappings });
 			writeStream.Position = 0;
 
-			IList<Person> results = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), writeStream, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = readMappings }));
+			var _ = new List<Person>(DelimitedSerializer<Person>.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), writeStream, new DelimitedDeserializeOptions { UseHeadings = true, Mappings = readMappings }));
 
 			writeStream.ForceClose();
 
@@ -238,5 +238,4 @@ namespace PutridParrot.Delimited.Data.Tests
 			Assert.AreEqual(11, items[0].Age);
 		}
 	}
-
 }
