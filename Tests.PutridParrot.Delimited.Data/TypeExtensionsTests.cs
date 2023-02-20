@@ -80,5 +80,4 @@ namespace PutridParrot.Delimited.Data.Tests
 			Assert.True(typeof(int).IsNumericType());
 		}
 	}
-
 }

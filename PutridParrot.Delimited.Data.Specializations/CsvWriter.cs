@@ -35,9 +35,8 @@ namespace PutridParrot.Delimited.Data.Specializations
 
 		public DelimitedOptions Options
 		{
-			get { return ((DelimitedSeparatedWriter)dsWriter).Options; }
-			set { ((DelimitedSeparatedWriter)dsWriter).Options = value; }
-		}
+			get => ((DelimitedSeparatedWriter)DsWriter).Options;
+            set => ((DelimitedSeparatedWriter)DsWriter).Options = value;
+        }
 	}
-
 }

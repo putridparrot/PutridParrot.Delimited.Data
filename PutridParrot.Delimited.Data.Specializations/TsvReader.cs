@@ -33,5 +33,4 @@ namespace PutridParrot.Delimited.Data.Specializations
 		{
 		}
 	}
-
 }

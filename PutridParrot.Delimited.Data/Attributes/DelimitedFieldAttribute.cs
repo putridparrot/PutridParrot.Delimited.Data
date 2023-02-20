@@ -27,5 +27,4 @@ namespace PutridParrot.Delimited.Data.Attributes
 			ColumnIndex = columnIndex;
 		}
 	}
-
 }

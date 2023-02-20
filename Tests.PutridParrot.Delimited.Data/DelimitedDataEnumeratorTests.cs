@@ -5,11 +5,10 @@ using PutridParrot.Delimited.Data.Specializations;
 using Microsoft.CSharp.RuntimeBinder;
 using NUnit.Framework;
 
-
 namespace PutridParrot.Delimited.Data.Tests
 {
 	[ExcludeFromCodeCoverage]
-	public class CsvEnumeratorTests
+	public class DelimitedDataEnumeratorTests
 	{
 		[Test]
 		public void Deserialize_EnumerateAllItems_ShouldListEachSymbolCorrectly()
@@ -19,7 +18,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			string[] symbols = { "MSFT", "GOOG" };
 
 			int idx = 0;
-			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
+			foreach (dynamic row in DelimitedDataEnumerator.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
@@ -34,8 +33,8 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
-			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content)))
+			var idx = 0;
+			foreach (dynamic row in DelimitedDataEnumerator.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content)))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
@@ -50,8 +49,8 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
-			foreach (dynamic row in CsvEnumerator.Deserialize(content, new DelimitedDeserializeOptions { UseHeadings = true }))
+			var idx = 0;
+			foreach (dynamic row in DelimitedDataEnumerator.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), content, new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
@@ -66,8 +65,8 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
-			foreach (dynamic row in CsvEnumerator.Deserialize(content))
+			var idx = 0;
+			foreach (dynamic row in DelimitedDataEnumerator.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), content))
 			{
 				Assert.AreEqual(symbols[idx], row.Symbol);
 				Console.WriteLine(String.Format("{0} {1} {2}", row.Symbol, row.High, row.Low));
@@ -82,8 +81,8 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			string[] symbols = { "MSFT", "GOOG" };
 
-			int idx = 0;
-			foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
+			var idx = 0;
+			foreach (dynamic row in DelimitedDataEnumerator.Deserialize(new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
 			{
 				Assert.AreEqual(symbols[idx], row["Symbol"]);
 				Console.WriteLine(String.Format("{0} {1} {2}", row["Symbol"], row["High"], row["Low"]));
@@ -96,7 +95,9 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			const string content = "Symbol,High,Low,Open,Close\nMSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
 
-			var ds = CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true });
+			var ds = DelimitedDataEnumerator.Deserialize(
+					new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content),
+					new DelimitedDeserializeOptions { UseHeadings = true });
 
 			var query = from dynamic r in ds where r.Open > 100 select r;
 			foreach (var row in query)
@@ -112,7 +113,10 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			const string content = "MSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
 
-			var ds = CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = false });
+			var ds = DelimitedDataEnumerator.Deserialize(
+					new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content),
+					new DelimitedDeserializeOptions { UseHeadings = false });
+
 
 			var query = from dynamic r in ds where r.Column3 > 100 select r;
 			foreach (var row in query)
@@ -128,13 +132,16 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			const string content = "MSFT,37.60,37.30,37.35,37.40\nGOOG,1190,1181.38,1189,1188";
 
-			var ds = CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = false });
+			var ds = DelimitedDataEnumerator.Deserialize(
+					new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content),
+					new DelimitedDeserializeOptions { UseHeadings = false });
+
 
 			var query = from dynamic r in ds where r[2] > 100 select r;
-			foreach (var row in query)
+			foreach (var column in query)
 			{
-				Assert.AreEqual("GOOG", row[0]);
-				Console.WriteLine(String.Format("{0} {1} {2}", row[0], row[1], row[2]));
+				Assert.AreEqual("GOOG", column[0]);
+				Console.WriteLine(String.Format("{0} {1} {2}", column[0], column[1], column[2]));
 			}
 		}
 
@@ -145,7 +152,9 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			Assert.Throws<RuntimeBinderException>(() =>
 			{
-				foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
+				foreach (dynamic row in DelimitedDataEnumerator.Deserialize(
+					new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content),
+					new DelimitedDeserializeOptions { UseHeadings = true }))
 				{
 					Console.WriteLine(row.Artist);
 				}
@@ -159,12 +168,13 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			Assert.Throws<RuntimeBinderException>(() =>
 			{
-				foreach (dynamic row in CsvEnumerator.Deserialize(Utils.ToStream(content), new DelimitedDeserializeOptions { UseHeadings = true }))
+				foreach (dynamic row in DelimitedDataEnumerator.Deserialize(
+					new DelimitedSeparatedReader(new CsvOptions()), Utils.ToStream(content),
+					new DelimitedDeserializeOptions { UseHeadings = true }))
 				{
 					Console.WriteLine(row["Artist"]);
 				}
 			});
 		}
 	}
-
 }

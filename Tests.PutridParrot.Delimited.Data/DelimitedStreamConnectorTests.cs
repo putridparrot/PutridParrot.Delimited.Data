@@ -52,7 +52,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			ms.Position = 0;
 
 			var sr = new StreamReader(ms);
-			string result = sr.ReadToEnd();
+			var result = sr.ReadToEnd();
 
 			ms.ForceClose();
 
@@ -72,7 +72,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			ms.Position = 0;
 
 			var sr = new StreamReader(ms);
-			string result = sr.ReadToEnd();
+			var result = sr.ReadToEnd();
 
 			ms.ForceClose();
 

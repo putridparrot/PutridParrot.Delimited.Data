@@ -40,5 +40,4 @@ namespace PutridParrot.Delimited.Data.Attributes
 		public bool Required { get; set; }
 		public string[] AlternateNames { get; set; }
 	}
-
 }

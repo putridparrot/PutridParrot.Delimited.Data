@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace PutridParrot.Delimited.Data.Attributes
 {
 	/// <summary>
-	/// Marks a property or field as a writeable data field.
+	/// Marks a property or field as a writable data field.
 	/// </summary>
 	[ExcludeFromCodeCoverage,
 	SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"),
@@ -25,5 +25,4 @@ namespace PutridParrot.Delimited.Data.Attributes
 		{
 		}
 	}
-
 }

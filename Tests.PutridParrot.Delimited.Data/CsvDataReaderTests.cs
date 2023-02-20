@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Text;
 using PutridParrot.Delimited.Data.Exceptions;
 using PutridParrot.Delimited.Data.Specializations;
@@ -19,7 +18,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			var mock = new Mock<Stream>();
 			mock.Setup(s => s.CanRead).Returns(false);
 
-			Assert.Throws<DelimitedStreamReaderException>(() => { CsvReader reader = new CsvReader(mock.Object); });
+			Assert.Throws<DelimitedStreamReaderException>(() => { var _ = new CsvReader(mock.Object); });
 		}
 
 		[Test]
@@ -28,7 +27,7 @@ namespace PutridParrot.Delimited.Data.Tests
 			var mock = new Mock<Stream>();
 			mock.Setup(s => s.CanRead).Returns(false);
 
-			Assert.Throws<DelimitedStreamReaderException>(() => { CsvReader reader = new CsvReader(mock.Object, Encoding.ASCII); });
+			Assert.Throws<DelimitedStreamReaderException>(() => { var _ = new CsvReader(mock.Object, Encoding.ASCII); });
 		}
 
 		[Test]
@@ -62,7 +61,7 @@ namespace PutridParrot.Delimited.Data.Tests
 		{
 			var reader = new CsvReader(Utils.ToStream("Hello, World"));
 
-			IList<string> csv = reader.ReadLine();
+			var csv = reader.ReadLine();
 
 			Assert.AreEqual(2, csv.Count);
 			Assert.AreEqual("Hello", csv[0]);

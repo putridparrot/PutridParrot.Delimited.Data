@@ -35,9 +35,8 @@ namespace PutridParrot.Delimited.Data.Specializations
 
 		public TsvOptions Options
 		{
-			get { return (TsvOptions)((DelimitedSeparatedWriter)dsWriter).Options; }
-			set { ((DelimitedSeparatedWriter)dsWriter).Options = value; }
-		}
+			get => (TsvOptions)((DelimitedSeparatedWriter)DsWriter).Options;
+            set => ((DelimitedSeparatedWriter)DsWriter).Options = value;
+        }
 	}
-
 }

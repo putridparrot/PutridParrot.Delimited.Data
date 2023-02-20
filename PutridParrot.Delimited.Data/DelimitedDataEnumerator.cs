@@ -8,7 +8,7 @@ using System.Text;
 namespace PutridParrot.Delimited.Data
 {
 	/// <summary>
-	/// This is a dynamic implemantion of the Deserialization methods aimed at use with LINQ
+	/// This is a dynamic implementation of the Deserialization methods aimed at use with LINQ
 	/// or just generally allows us to interact with the returned objects via properties which map
 	/// to header names
 	/// </summary>
@@ -63,7 +63,7 @@ namespace PutridParrot.Delimited.Data
 		private static string[] CreateColumnHeadings(int length)
 		{
 			var headers = new string[length];
-			for (int i = 1; i <= length; i++)
+			for (var i = 1; i <= length; i++)
 			{
 				headers[i - 1] = "Column" + i;
 			}
@@ -84,7 +84,7 @@ namespace PutridParrot.Delimited.Data
 				// remove any "ignore rows"
 				if (options != null && options.IgnoreFirstNRows > 0)
 				{
-					int nRow = 0;
+					var nRow = 0;
 					while (nRow < options.IgnoreFirstNRows && reader.ReadLine() != null)
 					{
 						nRow++;
@@ -96,7 +96,7 @@ namespace PutridParrot.Delimited.Data
 					IEnumerable<string> fields;
 					while ((fields = reader.ReadLine()) != null)
 					{
-						string[] f = fields.ToArray();
+						var f = fields.ToArray();
 						yield return new DelimitedRow(CreateColumnHeadings(f.Length), f);
 					}
 				}
@@ -105,7 +105,7 @@ namespace PutridParrot.Delimited.Data
 					IEnumerable<string> headings = reader.ReadLine();
 					if (headings != null)
 					{
-						string[] columnHeadings = headings.ToArray();
+						var columnHeadings = headings.ToArray();
 
 						IEnumerable<string> fields;
 						while ((fields = reader.ReadLine()) != null)

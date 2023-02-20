@@ -20,22 +20,21 @@ namespace PutridParrot.Delimited.Data
 	/// <typeparam name="T"></typeparam>
 	public static class DelimitedSerializer<T> where T : new()
 	{
-		private const string PROPERTY = "Property";
-		private const string HEADING = "Heading";
-		private const string COLUMN_INDEX = "ColumnIndex";
-		private const string MAPPING = "Mapping";
-		private const string SERIALIZER_MAPPINGS = "DelimitedSerializerMappings";
-		private const string REQUIRED = "Required";
+		private const string Property = "Property";
+		private const string Heading = "Heading";
+		private const string ColumnIndex = "ColumnIndex";
+		private const string Mapping = "Mapping";
+		private const string SerializerMappings = "DelimitedSerializerMappings";
+		private const string Required = "Required";
 
 		private static List<TAssocType> GetAssociations<TAssocType, TAttributeType>(Type type, Func<PropertyInfo, TAttributeType, TAssocType> factory)
 		{
 			var associations = new List<TAssocType>();
 
 			var properties = type.GetProperties();
-			foreach (PropertyInfo pi in properties)
+			foreach (var pi in properties)
 			{
-				var attributes = pi.GetCustomAttributes(typeof(TAttributeType), true) as TAttributeType[];
-				if (attributes != null && attributes.Length > 0)
+                if (pi.GetCustomAttributes(typeof(TAttributeType), true) is TAttributeType[] attributes && attributes.Length > 0)
 				{
 					associations.Add(factory.Invoke(pi, attributes[0]));
 				}
@@ -164,7 +163,7 @@ namespace PutridParrot.Delimited.Data
 
 				reader.MoveToContent();
 
-				reader.ReadStartElement(SERIALIZER_MAPPINGS);
+				reader.ReadStartElement(SerializerMappings);
 				if (!reader.IsEmptyElement)
 				{
 					properties = new List<TPropertyType>();
@@ -173,7 +172,7 @@ namespace PutridParrot.Delimited.Data
 
 					while (reader.Read())
 					{
-						if (reader.Name == MAPPING)
+						if (reader.Name == Mapping)
 						{
 							if (reader.HasAttributes)
 							{
@@ -203,27 +202,22 @@ namespace PutridParrot.Delimited.Data
 		{
 			return IterateOverMappingStream(mappingStream, (properties, attributes) => 
 				{
-					string property;
-					attributes.TryGetValue(PROPERTY, out property);
+					attributes.TryGetValue(Property, out var property);
+					attributes.TryGetValue(Heading, out var heading);
 
-					string heading;
-					attributes.TryGetValue(HEADING, out heading);
-
-					int index = -1;
-					string columnIndex;
-					if (attributes.TryGetValue(COLUMN_INDEX, out columnIndex))
+					var index = -1;
+					if (attributes.TryGetValue(ColumnIndex, out var columnIndex))
 					{
 						index = Convert.ToInt32(columnIndex, CultureInfo.CurrentCulture);
 					}
 
-					bool required = false;
-					string requiredString;
-					if(attributes.TryGetValue(REQUIRED, out requiredString))
+					var required = false;
+					if(attributes.TryGetValue(Required, out var requiredString))
 					{
 						required = Convert.ToBoolean(requiredString, CultureInfo.CurrentCulture);
 					}
 
-					PropertyInfo propertyInfo = properties.FirstOrDefault(p => p.Name == property);
+					var propertyInfo = properties.FirstOrDefault(p => p.Name == property);
 					return (propertyInfo != null) ?
 						new FieldReadProperty(propertyInfo, new DelimitedFieldReadAttribute(heading) { ColumnIndex = index, Required = required }) : null;
 				});
@@ -234,22 +228,19 @@ namespace PutridParrot.Delimited.Data
 		{
 			return IterateOverMappingStream(mappingStream, (properties, attributes) => 
 				{
-					string property;
-					attributes.TryGetValue(PROPERTY, out property);
+                    attributes.TryGetValue(Property, out var property);
+                    attributes.TryGetValue(Heading, out var heading);
 
-					string heading;
-					attributes.TryGetValue(HEADING, out heading);
-
-					int index = -1;
-					string columnIndex;
-					if (attributes.TryGetValue(COLUMN_INDEX, out columnIndex))
+					var index = -1;
+                    if (attributes.TryGetValue(ColumnIndex, out var columnIndex))
 					{
 						index = Convert.ToInt32(columnIndex, CultureInfo.CurrentCulture);
 					}
 
-					PropertyInfo propertyInfo = properties.FirstOrDefault(p => p.Name == property);
-					return (propertyInfo != null) ?
-						new FieldWriteProperty(propertyInfo, new DelimitedFieldWriteAttribute(heading) { ColumnIndex = index }) : null;
+					var propertyInfo = properties.FirstOrDefault(p => p.Name == property);
+					return propertyInfo != null ?
+						new FieldWriteProperty(propertyInfo, new DelimitedFieldWriteAttribute(heading) { ColumnIndex = index }) : 
+                        null;
 				});
 		}
 
@@ -283,13 +274,13 @@ namespace PutridParrot.Delimited.Data
 		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
 		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, DelimitedDeserializeOptions options)
 		{
-			IList<FieldReadProperty> attributes = options != null && options.Mappings != null ? options.Mappings :
+			var attributes = options != null && options.Mappings != null ? options.Mappings :
 				GetAssociations<FieldReadProperty, DelimitedFieldReadAttribute>(typeof(T), ReadAttributeFactory);
 
 			var required = new Dictionary<FieldReadProperty, bool>();
 			if (options != null && options.EnforceRequiredFields)
 			{
-				foreach (FieldReadProperty assoc in attributes)
+				foreach (var assoc in attributes)
 				{
 					if (assoc.Value.Required)
 					{
@@ -303,7 +294,7 @@ namespace PutridParrot.Delimited.Data
 				// remove any "ignore rows"
 				if (options != null && options.IgnoreFirstNRows > 0)
 				{
-					int nRow = 0;
+					var nRow = 0;
 					while (nRow < options.IgnoreFirstNRows && reader.ReadLine() != null)
 					{
 						nRow++;
@@ -319,7 +310,7 @@ namespace PutridParrot.Delimited.Data
 					while ((fields = reader.ReadLine()) != null)
 					{
 						var newItem = new T();
-						for (int i = 0; i < fields.Count(); i++)
+						for (var i = 0; i < fields.Count; i++)
 						{
 							dummy.Value.ColumnIndex = i;
 							ApplyToProperty(attributes, i, fields, dummy, newItem);
@@ -329,17 +320,17 @@ namespace PutridParrot.Delimited.Data
 				}
 				else
 				{
-					IList<string> headings = reader.ReadLine();
+					var headings = reader.ReadLine();
 					if (headings != null)
 					{
 						// we don't want to have to create this dummy every time, so create here and set-up later
 						var dummy = new FieldReadProperty(null, new DelimitedFieldReadAttribute());
 
-						bool hasHeadings = false;
-						foreach (string heading in headings)
+						var hasHeadings = false;
+						foreach (var heading in headings)
 						{
 							dummy.Value.Heading = heading;
-							int pos = GetColumnHeadingIndex(attributes, dummy);
+							var pos = GetColumnHeadingIndex(attributes, dummy);
 							if (pos >= 0)
 							{
 								hasHeadings = true;
@@ -361,10 +352,11 @@ namespace PutridParrot.Delimited.Data
 									continue;
 							}
 
-							var newItem = new T();
-							for (int i = 0; i < headings.Count(); i++)
+                            var fieldCount = fields.Count();
+                            var newItem = new T();
+							for (var i = 0; i < headings.Count; i++)
 							{
-								if (i < fields.Count())
+								if (i < fieldCount)
 								{
 									dummy.Value.Heading = headings.ElementAt(i);
 									ApplyToProperty(attributes, i, fields, dummy, newItem);
@@ -374,19 +366,16 @@ namespace PutridParrot.Delimited.Data
 							if (!AreSet(required, true))
 							{
 								var sb = new StringBuilder("One or more required fields were not supplied. Requires ");
-								bool firsitem = false;
-								foreach (FieldReadProperty a in required.Keys)
-								{
-									if (required[a] == false)
-									{
-										if (firsitem)
-										{
-											sb.Append(", ");
-										}
-										sb.Append(a.Value.Heading);
-										firsitem = true;
-									}
-								}
+								var firstItem = false;
+								foreach (var a in required.Keys.Where(a => required[a] == false))
+                                {
+                                    if (firstItem)
+                                    {
+                                        sb.Append(", ");
+                                    }
+                                    sb.Append(a.Value.Heading);
+                                    firstItem = true;
+                                }
 								throw new DelimitedSerializationException(sb.ToString());
 							}
 							// clear the required fields
@@ -399,7 +388,7 @@ namespace PutridParrot.Delimited.Data
 
 		private static void ApplyToProperty(IList<FieldReadProperty> attributes, int i, IEnumerable<string> fields, FieldReadProperty dummy, T newItem)
 		{
-			int pos = GetColumnHeadingIndex(attributes, dummy);
+			var pos = GetColumnHeadingIndex(attributes, dummy);
 			if (pos >= 0)
 			{
 				ChangeType(attributes[pos].Key, fields, i, newItem);
@@ -410,9 +399,9 @@ namespace PutridParrot.Delimited.Data
 		{
 			if (pi != null)
 			{
-				object o = CheckIfValidElseDefault(fields.ElementAt(i), pi.PropertyType);
+				var o = CheckIfValidElseDefault(fields.ElementAt(i), pi.PropertyType);
 
-				TypeConverter tc = TypeDescriptor.GetConverter(o.GetType());
+				var tc = TypeDescriptor.GetConverter(o.GetType());
 				if (tc.CanConvertTo(pi.PropertyType))
 				{
 					pi.SetValue(newItem, tc.ConvertTo(o, pi.PropertyType), null);
@@ -447,5 +436,4 @@ namespace PutridParrot.Delimited.Data
 			return o;
 		}
 	}
-
 }

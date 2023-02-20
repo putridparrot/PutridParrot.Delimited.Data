@@ -32,8 +32,8 @@ namespace PutridParrot.Delimited.Data
 	/// </example>
 	public class DelimitedRow : DynamicObject
 	{
-		private readonly string[] headings;
-		private readonly string[] fields;
+		private readonly string[] _headings;
+		private readonly string[] _fields;
 
 		[DebuggerStepThrough]
 		static DelimitedRow()
@@ -44,20 +44,20 @@ namespace PutridParrot.Delimited.Data
 		[DebuggerStepThrough]
 		internal DelimitedRow(string[] headings, string[] fields)
 		{
-			this.headings = headings;
-			this.fields = fields;
+			_headings = headings;
+			_fields = fields;
 		}
 
 		private bool GetField(string header, out string field)
 		{
 			field = null;
-			for (int i = 0; i < headings.Length; i++)
+			for (var i = 0; i < _headings.Length; i++)
 			{
-				if (headings[i] == header)
+				if (_headings[i] == header)
 				{
-					if (i < fields.Length)
+					if (i < _fields.Length)
 					{
-						field = fields[i];
+						field = _fields[i];
 						return true;
 					}
 				}
@@ -71,21 +71,20 @@ namespace PutridParrot.Delimited.Data
 		{
 			result = null;
 
-			if (indexes != null && indexes.Length > 0)
+			if (indexes?.Length > 0)
 			{
 				if (indexes[0].IsNumeric())
 				{
 					var idx = (int)indexes[0];
-					if (idx < fields.Length)
+					if (idx < _fields.Length)
 					{
-						result = TypeExtensions.ConvertToInferredType(fields[idx], CultureInfo);
+						result = TypeExtensions.ConvertToInferredType(_fields[idx], CultureInfo);
 						return true;
 					}
 				}
 				else if (indexes[0].IsString())
 				{
-					string field;
-					if (GetField((string)indexes[0], out field))
+					if (GetField((string)indexes[0], out var field))
 					{
 						result = TypeExtensions.ConvertToInferredType(field, CultureInfo);
 						return true;

@@ -35,9 +35,8 @@ namespace PutridParrot.Delimited.Data.Specializations
 
 		public DelimitedOptions Options
 		{
-			get { return ((DelimitedSeparatedReader)dsReader).Options; }
-			set { ((DelimitedSeparatedReader)dsReader).Options = value; }
-		}
+			get => ((DelimitedSeparatedReader)DsReader).Options;
+            set => ((DelimitedSeparatedReader)DsReader).Options = value;
+        }
 	}
-
 }
