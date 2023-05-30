@@ -14,7 +14,6 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PutridParrot.Delimited.Data.Tools\PutridParrot.Delimited.Data.Tools.csproj" />
     <ProjectReference Include="..\PutridParrot.Delimited.Data\PutridParrot.Delimited.Data.csproj" />
   </ItemGroup>
 </Project>
