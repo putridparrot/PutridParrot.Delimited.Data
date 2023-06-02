@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public static class Utils

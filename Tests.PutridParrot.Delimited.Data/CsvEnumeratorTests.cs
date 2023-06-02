@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using PutridParrot.Delimited.Data.Specializations;
 using Microsoft.CSharp.RuntimeBinder;
 using NUnit.Framework;
+using PutridParrot.Delimited.Data;
+using PutridParrot.Delimited.Data.Specializations;
 
-
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class CsvEnumeratorTests

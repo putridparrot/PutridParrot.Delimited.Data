@@ -4,11 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using NUnit.Framework;
+using PutridParrot.Delimited.Data;
 using PutridParrot.Delimited.Data.Exceptions;
 using PutridParrot.Delimited.Data.Specializations;
-using NUnit.Framework;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class MappingTests

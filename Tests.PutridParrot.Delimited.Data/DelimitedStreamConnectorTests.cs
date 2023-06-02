@@ -5,7 +5,7 @@ using NUnit.Framework;
 using PutridParrot.Delimited.Data.Specializations;
 using PutridParrot.Delimited.Data.Tools;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class DelimitedStreamConnectorTests

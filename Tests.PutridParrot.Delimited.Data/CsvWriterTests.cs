@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Security;
 using System.Text;
-using PutridParrot.Delimited.Data.Exceptions;
-using PutridParrot.Delimited.Data.Specializations;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using PutridParrot.Delimited.Data;
+using PutridParrot.Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Specializations;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class CsvWriterTests
@@ -73,6 +74,23 @@ namespace PutridParrot.Delimited.Data.Tests
 
 			Assert.AreEqual($"Hello,World{Environment.NewLine}", result);
 		}
+
+        [Test]
+        public async Task CsvWriter_WriteLineAsync()
+        {
+            var ms = new MemoryStream();
+
+            var writer = new CsvWriter(ms);
+            writer.WriteLine(new[] { "Hello", "World" });
+
+            writer.Flush();
+            ms.Position = 0;
+
+            var reader = new StreamReader(ms);
+            var result = reader.ReadToEnd();
+
+            Assert.AreEqual($"Hello,World{Environment.NewLine}", result);
+        }
 
         [Test]
 		public void CsvReader_CheckOptionsSetterGetter()

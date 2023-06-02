@@ -7,7 +7,7 @@ using PutridParrot.Delimited.Data.Specializations;
 using Moq;
 using NUnit.Framework;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class TsvWriterTests

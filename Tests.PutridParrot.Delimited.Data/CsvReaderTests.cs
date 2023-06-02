@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
-using PutridParrot.Delimited.Data.Exceptions;
-using PutridParrot.Delimited.Data.Specializations;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using PutridParrot.Delimited.Data;
+using PutridParrot.Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Specializations;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class CsvDataReaderTests
@@ -69,6 +70,18 @@ namespace PutridParrot.Delimited.Data.Tests
 		}
 
         [Test]
+        public async Task CsvReader_ReadLineAsync_MinimalTest()
+        {
+            var reader = new CsvReader(Utils.ToStream("Hello, World"));
+
+            var csv = await reader.ReadLineAsync();
+
+            Assert.AreEqual(2, csv.Count);
+            Assert.AreEqual("Hello", csv[0]);
+            Assert.AreEqual("World", csv[1]);
+        }
+
+        [Test]
         public void CsvReader_ReadLine_EmptyData()
         {
             var reader = new CsvReader(Utils.ToStream(""));
@@ -79,16 +92,36 @@ namespace PutridParrot.Delimited.Data.Tests
         }
 
         [Test]
+        public async Task CsvReader_ReadLineAsync_EmptyData()
+        {
+            var reader = new CsvReader(Utils.ToStream(""));
+
+            var csv = await reader.ReadLineAsync();
+
+            Assert.IsNull(csv);
+        }
+
+        [Test]
 		public void CsvReader_ReadOneItemWithQuotes()
 		{
 			var reader = new CsvReader(Utils.ToStream("\"Hello, World\""));
-			IList<string> csv = reader.ReadLine();
+			var csv = reader.ReadLine();
 
 			Assert.AreEqual(1, csv.Count);
 			Assert.AreEqual("Hello, World", csv[0]);
 		}
 
-		[Test]
+        [Test]
+        public async Task CsvReader_ReadAsyncOneItemWithQuotes()
+        {
+            var reader = new CsvReader(Utils.ToStream("\"Hello, World\""));
+            var csv = await reader.ReadLineAsync();
+
+            Assert.AreEqual(1, csv.Count);
+            Assert.AreEqual("Hello, World", csv[0]);
+        }
+
+        [Test]
 		public void CsvReader_CheckOptionsSetterGetter()
 		{
 			var options = new DelimitedOptions('.');

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace PutridParrot.Delimited.Data
 {
@@ -51,6 +52,33 @@ namespace PutridParrot.Delimited.Data
 				}
 			}
 		}
-	}
+
+        public async Task WriteAsync(StreamWriter writer, IEnumerable<string> data)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            var list = new List<string>(data);
+
+            var i = 0;
+            var count = list.Count;
+
+            foreach (var item in list)
+            {
+                await writer.WriteAsync(Escape(item));
+                if (i++ < count - 1)
+                {
+                    await writer.WriteAsync(Options.Delimiter);
+                }
+            }
+        }
+
+    }
 
 }

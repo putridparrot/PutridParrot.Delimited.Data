@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using PutridParrot.Delimited.Data.Exceptions;
 
 namespace PutridParrot.Delimited.Data
@@ -96,5 +97,20 @@ namespace PutridParrot.Delimited.Data
 			Write(data);
 			Writer.WriteLine();
 		}
-	}
+
+        public async Task WriteAsync(IEnumerable<string> data)
+        {
+            if (Writer == null)
+                throw new DelimitedStreamWriterException("StreamWriter is null");
+
+            await DsWriter.WriteAsync(Writer, data);
+        }
+
+        public async Task WriteLineAsync(IEnumerable<string> data)
+        {
+            await WriteAsync(data);
+            await Writer.WriteLineAsync();
+        }
+
+    }
 }

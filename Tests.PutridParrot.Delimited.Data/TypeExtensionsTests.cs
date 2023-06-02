@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using PutridParrot.Delimited.Data.Utils;
 using NUnit.Framework;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class TypeExtensionsTests

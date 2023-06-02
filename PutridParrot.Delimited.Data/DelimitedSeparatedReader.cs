@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using PutridParrot.Delimited.Data.Exceptions;
 
 namespace PutridParrot.Delimited.Data
@@ -36,7 +37,23 @@ namespace PutridParrot.Delimited.Data
 			return line == null ? null : Split(line, Options.Delimiter, Options.Qualifier);
         }
 
-		private static IList<string> Split(string line, char delimiter, char qualifier)
+        public async Task<IList<string>> ReadAsync(StreamReader reader)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            if (Options == null || Options.Delimiter == default(char))
+            {
+                throw new DelimitedReaderException("The options need to be supplied and with a delimiter set");
+            }
+
+            var line = await reader.ReadLineAsync();
+            return line == null ? null : Split(line, Options.Delimiter, Options.Qualifier);
+        }
+
+        private static IList<string> Split(string line, char delimiter, char qualifier)
 		{
 			if (line == null)
 				throw new ArgumentNullException(nameof(line));

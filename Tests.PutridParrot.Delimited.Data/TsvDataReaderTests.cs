@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using PutridParrot.Delimited.Data.Exceptions;
-using PutridParrot.Delimited.Data.Specializations;
 using Moq;
 using NUnit.Framework;
+using PutridParrot.Delimited.Data.Exceptions;
+using PutridParrot.Delimited.Data.Specializations;
 
-namespace PutridParrot.Delimited.Data.Tests
+namespace Tests.PutridParrot.Delimited.Data
 {
 	[ExcludeFromCodeCoverage]
 	public class TsvDataReaderTests

@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using PutridParrot.Delimited.Data.Exceptions;
 
 namespace PutridParrot.Delimited.Data
@@ -13,13 +14,9 @@ namespace PutridParrot.Delimited.Data
 	/// </summary>
 	public class DelimitedStreamReader : IDisposable
 	{
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected Stream Stream;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected StreamReader Reader;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected IDelimitedSeparatedReader DsReader;
-		[SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
 		protected bool Disposed;
 
 		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream) :
@@ -45,7 +42,6 @@ namespace PutridParrot.Delimited.Data
 		}
 
 		[ExcludeFromCodeCoverage]
-		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
 		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, string path, Encoding encoding) :
 			this(delimiterSeparatedReader, new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), encoding)
 		{
@@ -84,7 +80,6 @@ namespace PutridParrot.Delimited.Data
 			}
 		}
 
-		[SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StreamReader")]
 		public virtual IList<string> ReadLine()
 		{
 			if (Reader == null)
@@ -106,6 +101,28 @@ namespace PutridParrot.Delimited.Data
 			}
 			return line;
 		}
-	}
+
+        public virtual async Task<IList<string>> ReadLineAsync()
+        {
+            if (Reader == null)
+                throw new DelimitedStreamReaderException("StreamReader is null");
+
+            return await DsReader.ReadAsync(Reader);
+        }
+
+        public async Task<IList<string>> ReadLineAsync(bool ignoreEmptyRows)
+        {
+            var line = await ReadLineAsync();
+
+            if (ignoreEmptyRows)
+            {
+                while (line != null && line.All(String.IsNullOrEmpty))
+                {
+                    line = await ReadLineAsync();
+                }
+            }
+            return line;
+        }
+    }
 
 }
