@@ -18,7 +18,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 			return DelimitedDataEnumerator.Deserialize(GetReader(), data, null);
 		}
 
-		public static IEnumerable Deserialize(string data, DelimitedDeserializeOptions options)
+		public static IEnumerable Deserialize(string data, DelimitedDeserializeOptions? options)
 		{
 			return DelimitedDataEnumerator.Deserialize(GetReader(), data, options);
 		}

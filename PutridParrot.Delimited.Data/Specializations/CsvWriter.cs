@@ -14,7 +14,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 		{
 		}
 
-		public CsvWriter(Stream stream, Encoding encoding) :
+		public CsvWriter(Stream stream, Encoding? encoding) :
 			base(new DelimitedSeparatedWriter(new CsvOptions()), stream, encoding)
 		{
 		}
@@ -26,7 +26,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 		}
 
 		[ExcludeFromCodeCoverage]
-		public CsvWriter(string path, Encoding encoding) :
+		public CsvWriter(string path, Encoding? encoding) :
 			this(new FileStream(path, FileMode.Create, FileAccess.Write), encoding)
 		{
 		}

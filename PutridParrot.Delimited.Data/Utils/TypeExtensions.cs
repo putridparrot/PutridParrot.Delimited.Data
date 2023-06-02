@@ -14,7 +14,7 @@ namespace PutridParrot.Delimited.Data.Utils
 			typeof(decimal), typeof(double), typeof(float)
 		};
 
-		public static bool IsNumeric(this object o)
+		public static bool IsNumeric(this object? o)
 		{
 			return o != null && IsNumericType(o.GetType());
 		}
@@ -24,7 +24,7 @@ namespace PutridParrot.Delimited.Data.Utils
 			return NumericTypes.Contains(type);
 		}
 
-		public static bool IsBoolean(this object o)
+		public static bool IsBoolean(this object? o)
 		{
 			return o != null && IsBooleanType(o.GetType());
 		}
@@ -34,7 +34,7 @@ namespace PutridParrot.Delimited.Data.Utils
 			return Type.GetTypeCode(type) == TypeCode.Boolean;
 		}
 
-		public static bool IsString(this object o)
+		public static bool IsString(this object? o)
 		{
 			return o != null && IsStringType(o.GetType());
 		}
@@ -50,7 +50,7 @@ namespace PutridParrot.Delimited.Data.Utils
 		}
 
 		// There must be a better way to do this
-		public static object ConvertToInferredType(string field, CultureInfo cultureInfo)
+		public static object? ConvertToInferredType(string? field, CultureInfo cultureInfo)
 		{
 			if (bool.TryParse(field, out var b))
 			{

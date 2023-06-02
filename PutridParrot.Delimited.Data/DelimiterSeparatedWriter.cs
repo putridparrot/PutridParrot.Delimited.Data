@@ -19,15 +19,15 @@ namespace PutridParrot.Delimited.Data
 
 		public DelimitedOptions Options { get; set; }
 
-		private string Escape(string data)
+		private string? Escape(string? data)
 		{
 			var qualifier = Options.Qualifier == default(char) ? "\"" : Options.Qualifier.ToString(CultureInfo.CurrentCulture);
 
-			return data != null && (Options.QualifyAll || data.IndexOfAny(String.Format("{0}{1}\x0A\x0D", qualifier, Options.Delimiter).ToCharArray()) > -1)
-					? qualifier + data.Replace(qualifier, String.Format("{0}{0}", qualifier)) + qualifier : data;
+			return data != null && (Options.QualifyAll || data.IndexOfAny($"{qualifier}{Options.Delimiter}\x0A\x0D".ToCharArray()) > -1)
+					? qualifier + data.Replace(qualifier, string.Format("{0}{0}", qualifier)) + qualifier : data;
 		}
 
-		public void Write(StreamWriter writer, IEnumerable<string> data)
+		public void Write(StreamWriter writer, IEnumerable<string?> data)
 		{
 			if (writer == null)
 			{
@@ -38,7 +38,7 @@ namespace PutridParrot.Delimited.Data
 				throw new ArgumentNullException(nameof(data));
 			}
 
-			var list = new List<string>(data);
+			var list = new List<string?>(data);
 
 			var i = 0;
 			var count = list.Count;
@@ -64,7 +64,7 @@ namespace PutridParrot.Delimited.Data
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var list = new List<string>(data);
+            var list = new List<string?>(data);
 
             var i = 0;
             var count = list.Count;

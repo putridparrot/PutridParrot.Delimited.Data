@@ -14,7 +14,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 		{
 		}
 
-		public CsvReader(Stream stream, Encoding encoding) :
+		public CsvReader(Stream stream, Encoding? encoding) :
 			base(new DelimitedSeparatedReader(new CsvOptions()), stream, encoding)
 		{
 		}
@@ -26,7 +26,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 		}
 
 		[ExcludeFromCodeCoverage]
-		public CsvReader(string path, Encoding encoding) :
+		public CsvReader(string path, Encoding? encoding) :
 			this(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), encoding)
 		{
 		}

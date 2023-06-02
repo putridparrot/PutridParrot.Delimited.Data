@@ -10,7 +10,7 @@ namespace PutridParrot.Delimited.Data
 		/// <summary>
 		/// Gets/Sets the mappings for how data should be serialized
 		/// </summary>
-		public IList<FieldWriteProperty> Mappings { get; set; }
+		public IList<FieldWriteProperty>? Mappings { get; set; }
 		/// <summary>
 		/// Gets/Sets whether we should include headers in the serialized data
 		/// </summary>

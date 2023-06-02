@@ -21,7 +21,7 @@ namespace PutridParrot.Delimited.Data
 
 		public DelimitedOptions Options { get; set; }
 
-		public IList<string> Read(StreamReader reader)
+		public IList<string>? Read(StreamReader reader)
 		{
 			if (reader == null)
 			{
@@ -37,7 +37,7 @@ namespace PutridParrot.Delimited.Data
 			return line == null ? null : Split(line, Options.Delimiter, Options.Qualifier);
         }
 
-        public async Task<IList<string>> ReadAsync(StreamReader reader)
+        public async Task<IList<string>?> ReadAsync(StreamReader reader)
         {
             if (reader == null)
             {

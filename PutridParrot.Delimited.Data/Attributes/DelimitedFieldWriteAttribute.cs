@@ -14,7 +14,7 @@ namespace PutridParrot.Delimited.Data.Attributes
 		{
 		}
 
-		public DelimitedFieldWriteAttribute(string heading) :
+		public DelimitedFieldWriteAttribute(string? heading) :
 			base(heading)
 		{
 		}

@@ -29,7 +29,7 @@ namespace PutridParrot.Delimited.Data
 		/// <summary>
 		/// Gets/Sets the mappings for the object to deserialize to
 		/// </summary>
-		public IList<FieldReadProperty> Mappings { get; set; }
+		public IList<FieldReadProperty>? Mappings { get; set; }
 		/// <summary>
 		/// Gets/Sets whether we should ignore empty rows
 		/// </summary>

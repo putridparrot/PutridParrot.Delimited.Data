@@ -13,8 +13,8 @@ namespace PutridParrot.Delimited.Data
 	/// </summary>
 	public class DelimitedStreamWriter : IDisposable
 	{
-		protected Stream Stream;
-		protected StreamWriter Writer;
+		protected Stream? Stream;
+		protected StreamWriter? Writer;
 		protected IDelimitedSeparatedWriter DsWriter;
 		protected bool Disposed;
 
@@ -23,7 +23,7 @@ namespace PutridParrot.Delimited.Data
 		{
 		}
 
-		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream, Encoding encoding)
+		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream, Encoding? encoding)
 		{
             DsWriter = delimiterSeparatedWriter;
 			Stream = stream ?? throw new ArgumentNullException(nameof(stream));
@@ -41,7 +41,7 @@ namespace PutridParrot.Delimited.Data
 		}
 
 		[ExcludeFromCodeCoverage]
-		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, string path, Encoding encoding) :
+		public DelimitedStreamWriter(IDelimitedSeparatedWriter delimiterSeparatedWriter, string path, Encoding? encoding) :
 			this(delimiterSeparatedWriter, new FileStream(path, FileMode.Create, FileAccess.Write), encoding)
 		{
 		}
@@ -84,7 +84,7 @@ namespace PutridParrot.Delimited.Data
             Writer?.Flush();
         }
 
-		public void Write(IEnumerable<string> data)
+		public void Write(IEnumerable<string?> data)
 		{
 			if (Writer == null)
 				throw new DelimitedStreamWriterException("StreamWriter is null");
@@ -92,10 +92,10 @@ namespace PutridParrot.Delimited.Data
 			DsWriter.Write(Writer, data);
 		}
 
-		public void WriteLine(IEnumerable<string> data)
+		public void WriteLine(IEnumerable<string?> data)
 		{
 			Write(data);
-			Writer.WriteLine();
+			Writer?.WriteLine();
 		}
 
         public async Task WriteAsync(IEnumerable<string> data)
@@ -109,6 +109,10 @@ namespace PutridParrot.Delimited.Data
         public async Task WriteLineAsync(IEnumerable<string> data)
         {
             await WriteAsync(data);
+
+            if (Writer == null)
+                throw new DelimitedStreamWriterException("Write is null");
+
             await Writer.WriteLineAsync();
         }
 

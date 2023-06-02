@@ -1,6 +1,11 @@
 ## Delimited.Data
 
 [![Build](https://github.com/putridparrot/PutridParrot.Delimited.Data/actions/workflows/build.yml/badge.svg)](https://github.com/putridparrot/PutridParrot.Delimited.Data/actions/workflows/build.yml)
+[![NuGet version (PutridParrot.Delimited.Data)](https://img.shields.io/nuget/v/PutridParrot.Delimited.Data.svg?style=flat-square)](https://www.nuget.org/packages/PutridParrot.Delimited.Data/)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/putridparrot/PutridParrot.Delimited.Data/blob/master/LICENSE.md)
+[![GitHub Releases](https://img.shields.io/github/release/putridparrot/PutridParrot.Delimited.Data.svg)](https://github.com/putridparrot/PutridParrot.Delimited.Data/releases)
+[![GitHub Issues](https://img.shields.io/github/issues/putridparrot/PutridParrot.Delimited.Data.svg)](https://github.com/putridparrot/PutridParrot.Delimited.Data/issues)
+
 
 Delimited.Data was designed to allow the user to interact CSV, TSV etc. data. 
 
@@ -44,12 +49,10 @@ The resultant IEnumerable is also useable from LINQ thus allowing us to query th
 
 In some cases we need to create an object or it's mappings (for use with the CsvSerializer) from the data. To save having to write the code for this we can use the DelimitedCodeGenerator application to generate the .cs file representing the serialization object.
 
-## Other Tools
+## Changes
 
-### DelimitedStreamConnector
-
-DelimitedStreamConnector is a very simple class which simply handles the connecting of two delimited streams, a reader and writer are supplied and the Pipe method will simply 
- transform data from one stream reader into the other stream writer.
+* 0.5.0.0 - Consolidated code into a single DLL
+* 0.6.0.0 - Add Async Read/Write methods. Removed DelimitedStreamConnector due to new more useful implementation being built, also started to add nullable parameters.
 
 ### Library license
 

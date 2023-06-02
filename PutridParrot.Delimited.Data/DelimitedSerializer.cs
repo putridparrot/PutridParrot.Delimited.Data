@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Globalization;
 using System.Linq;
@@ -43,7 +42,7 @@ namespace PutridParrot.Delimited.Data
 			return associations;
 		}
 
-		private static FieldReadProperty ReadAttributeFactory(PropertyInfo propertyInfo, DelimitedFieldReadAttribute attribute)
+		private static FieldReadProperty ReadAttributeFactory(PropertyInfo? propertyInfo, DelimitedFieldReadAttribute attribute)
 		{
 			return new FieldReadProperty(propertyInfo, attribute);
 		}
@@ -53,7 +52,7 @@ namespace PutridParrot.Delimited.Data
 			return new FieldWriteProperty(propertyInfo, attribute);
 		}
 
-		public static void Serialize(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream, IList<T> list, DelimitedSerializeOptions options)
+		public static void Serialize(IDelimitedSeparatedWriter delimiterSeparatedWriter, Stream stream, IList<T>? list, DelimitedSerializeOptions? options)
 		{
 			var attributes = options != null && options.Mappings != null ? new List<FieldWriteProperty>(options.Mappings) :
 				GetAssociations<FieldWriteProperty, DelimitedFieldWriteAttribute>(typeof(T), WriteAttributeFactory);
@@ -77,7 +76,7 @@ namespace PutridParrot.Delimited.Data
 
             if (list != null)
             {
-                foreach (T t in list)
+                foreach (var t in list)
                 {
                     Serialize(writer, t, attributes);
                 }
@@ -86,16 +85,16 @@ namespace PutridParrot.Delimited.Data
 
 		private static void Serialize(DelimitedStreamWriter writer, T instance, List<FieldWriteProperty> attributes)
 		{
-			IList<string> items = new List<string>(attributes.Count);
+			IList<string?> items = new List<string?>(attributes.Count);
 			foreach (var association in attributes)
 			{
 				var value = association.Key.GetValue(instance, null);
-				items.Add(value != null ? value.ToString() : String.Empty);
+				items.Add(value != null ? value.ToString() : string.Empty);
 			}
 			writer.WriteLine(items);
 		}
 
-		private static void Clear(Dictionary<FieldReadProperty, bool> dictionary)
+		private static void Clear(Dictionary<FieldReadProperty, bool>? dictionary)
 		{
 			if (dictionary != null)
 			{
@@ -107,17 +106,17 @@ namespace PutridParrot.Delimited.Data
 			}
 		}
 
-		private static bool AreSet(Dictionary<FieldReadProperty, bool> dictionary, bool value)
+		private static bool AreSet(Dictionary<FieldReadProperty, bool>? dictionary, bool value)
 		{
 			return dictionary == null || dictionary.Keys.All(a => dictionary[a] == value);
 		}
 
 		private static int FindByHeading(IEnumerable<FieldReadProperty> fields, FieldReadProperty value)
 		{
-			int idx = 0;
+			var idx = 0;
 			foreach (FieldReadProperty kvp in fields)
 			{
-				if (kvp.Value.Heading.Equals(value.Value.Heading, StringComparison.CurrentCultureIgnoreCase))
+				if (kvp.Value.Heading != null && kvp.Value.Heading.Equals(value.Value.Heading, StringComparison.CurrentCultureIgnoreCase))
 					return idx;
 				idx++;
 			}
@@ -126,12 +125,12 @@ namespace PutridParrot.Delimited.Data
 
 		private static int FindByAlternateNames(IEnumerable<FieldReadProperty> fields, FieldReadProperty value)
 		{
-			int idx = 0;
-			foreach (FieldReadProperty kvp in fields)
+			var idx = 0;
+			foreach (var kvp in fields)
 			{
 				if (kvp.Value.AlternateNames != null)
 				{
-					if (kvp.Value.AlternateNames.Any(alternateName => value.Value.Heading.Equals(alternateName, StringComparison.CurrentCultureIgnoreCase)))
+					if (kvp.Value.AlternateNames.Any(alternateName => value.Value.Heading != null && value.Value.Heading.Equals(alternateName, StringComparison.CurrentCultureIgnoreCase)))
 					{
 						return idx;
 					}
@@ -147,55 +146,53 @@ namespace PutridParrot.Delimited.Data
 			return idx < 0 ? FindByAlternateNames(fields, value) : idx;
 		}
 
-		private static IList<TPropertyType> IterateOverMappingStream<TPropertyType>(Stream mappingStream, Func<PropertyInfo[], IDictionary<string, string>, TPropertyType> builder)
+		private static IList<TPropertyType>? IterateOverMappingStream<TPropertyType>(Stream mappingStream, Func<PropertyInfo[], IDictionary<string, string>, TPropertyType> builder)
 		{
-			List<TPropertyType> properties = null;
+			List<TPropertyType>? properties = null;
 
-			using (XmlReader reader = XmlReader.Create(mappingStream))
-			{
-				if (reader.IsEmptyElement)
-				{
-					reader.ReadStartElement();
-					return null;
-				}
+            using var reader = XmlReader.Create(mappingStream);
+            if (reader.IsEmptyElement)
+            {
+                reader.ReadStartElement();
+                return null;
+            }
 
-				reader.MoveToContent();
+            reader.MoveToContent();
 
-				reader.ReadStartElement(SerializerMappings);
-				if (!reader.IsEmptyElement)
-				{
-					properties = new List<TPropertyType>();
+            reader.ReadStartElement(SerializerMappings);
+            if (!reader.IsEmptyElement)
+            {
+                properties = new List<TPropertyType>();
 
-					PropertyInfo[] p = typeof(T).GetProperties();
+                PropertyInfo[] p = typeof(T).GetProperties();
 
-					while (reader.Read())
-					{
-						if (reader.Name == Mapping)
-						{
-							if (reader.HasAttributes)
-							{
-								var attributes = new Dictionary<string, string>();
-								while (reader.MoveToNextAttribute())
-								{
-									attributes.Add(reader.Name, reader.Value);
-								}
+                while (reader.Read())
+                {
+                    if (reader.Name == Mapping)
+                    {
+                        if (reader.HasAttributes)
+                        {
+                            var attributes = new Dictionary<string, string>();
+                            while (reader.MoveToNextAttribute())
+                            {
+                                attributes.Add(reader.Name, reader.Value);
+                            }
 
-								TPropertyType pt = builder(p, attributes);
-								if (!EqualityComparer<TPropertyType>.Default.Equals(pt, default(TPropertyType)))
-								{
-									properties.Add(pt);
-								}
-							}
-							reader.Read();
-						}
-					}
-				}
-			}
+                            TPropertyType pt = builder(p, attributes);
+                            if (pt is not null)
+                            {
+                                properties.Add(pt);
+                            }
+                        }
+                        reader.Read();
+                    }
+                }
+            }
 
-			return properties;
+            return properties;
 		}
 
-		public static IList<FieldReadProperty> GenerateReadMappings(Stream mappingStream)
+		public static IList<FieldReadProperty?>? GenerateReadMappings(Stream mappingStream)
 		{
 			return IterateOverMappingStream(mappingStream, (properties, attributes) => 
 				{
@@ -215,12 +212,13 @@ namespace PutridParrot.Delimited.Data
 					}
 
 					var propertyInfo = properties.FirstOrDefault(p => p.Name == property);
-					return (propertyInfo != null) ?
-						new FieldReadProperty(propertyInfo, new DelimitedFieldReadAttribute(heading) { ColumnIndex = index, Required = required }) : null;
+					return propertyInfo != null ?
+						new FieldReadProperty(propertyInfo, new DelimitedFieldReadAttribute(heading) { ColumnIndex = index, Required = required }) : 
+                        null;
 				});
 		}
 
-		public static IList<FieldWriteProperty> GenerateWriteMappings(Stream mappingStream)
+		public static IList<FieldWriteProperty?>? GenerateWriteMappings(Stream mappingStream)
 		{
 			return IterateOverMappingStream(mappingStream, (properties, attributes) => 
 				{
@@ -245,7 +243,7 @@ namespace PutridParrot.Delimited.Data
 			return Deserialize(delimiterSeparatedReader, data, null);
 		}
 
-		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, string data, DelimitedDeserializeOptions options)
+		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, string data, DelimitedDeserializeOptions? options)
         {
             using var memoryStream = new MemoryStream();
 
@@ -263,7 +261,7 @@ namespace PutridParrot.Delimited.Data
 			return Deserialize(delimiterSeparatedReader, stream, null);
 		}
 
-		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, DelimitedDeserializeOptions options)
+		public static IEnumerable<T> Deserialize(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, DelimitedDeserializeOptions? options)
 		{
 			var attributes = options != null && options.Mappings != null ? options.Mappings :
 				GetAssociations<FieldReadProperty, DelimitedFieldReadAttribute>(typeof(T), ReadAttributeFactory);
@@ -297,8 +295,7 @@ namespace PutridParrot.Delimited.Data
                 // we don't want to have to create this dummy every time, so create here and set-up later
                 var dummy = new FieldReadProperty(null, new DelimitedFieldReadAttribute());
 
-                IList<string> fields;
-                while ((fields = reader.ReadLine()) != null)
+                while (reader.ReadLine() is { } fields)
                 {
                     var newItem = new T();
                     for (var i = 0; i < fields.Count; i++)
@@ -334,7 +331,7 @@ namespace PutridParrot.Delimited.Data
                         throw new DelimitedSerializationException("Expected to find heading names within the first row of the data but none were found.");
                     }
 
-                    IEnumerable<string> fields;
+                    IEnumerable<string>? fields;
                     while ((fields = reader.ReadLine()) != null)
                     {
                         if (options != null && options.IgnoreEmptyRows)
@@ -376,7 +373,7 @@ namespace PutridParrot.Delimited.Data
             }
         }
 
-		private static void ApplyToProperty(IList<FieldReadProperty> attributes, int i, IEnumerable<string> fields, FieldReadProperty dummy, T newItem)
+		private static void ApplyToProperty(IList<FieldReadProperty> attributes, int i, IEnumerable<string>? fields, FieldReadProperty dummy, T newItem)
 		{
 			var pos = GetColumnHeadingIndex(attributes, dummy);
 			if (pos >= 0)
@@ -385,28 +382,31 @@ namespace PutridParrot.Delimited.Data
 			}
 		}
 
-		private static void ChangeType(PropertyInfo pi, IEnumerable<string> fields, int i, T newItem)
+		private static void ChangeType(PropertyInfo? pi, IEnumerable<string>? fields, int i, T newItem)
 		{
 			if (pi != null)
 			{
-				var o = CheckIfValidElseDefault(fields.ElementAt(i), pi.PropertyType);
+                if (fields != null)
+                {
+                    var o = CheckIfValidElseDefault(fields.ElementAt(i), pi.PropertyType);
 
-				var tc = TypeDescriptor.GetConverter(o.GetType());
-				if (tc.CanConvertTo(pi.PropertyType))
-				{
-					pi.SetValue(newItem, tc.ConvertTo(o, pi.PropertyType), null);
-				}
-				else
-				{
-					tc = TypeDescriptor.GetConverter(pi.PropertyType);
-					// if we're using a boolean type convertor let's switch to the extended version
-					if (tc is BooleanConverter)
-						tc = new ExtendedBooleanConvertor();
+                    var tc = TypeDescriptor.GetConverter(o.GetType());
+                    if (tc.CanConvertTo(pi.PropertyType))
+                    {
+                        pi.SetValue(newItem, tc.ConvertTo(o, pi.PropertyType), null);
+                    }
+                    else
+                    {
+                        tc = TypeDescriptor.GetConverter(pi.PropertyType);
+                        // if we're using a boolean type convertor let's switch to the extended version
+                        if (tc is BooleanConverter)
+                            tc = new ExtendedBooleanConvertor();
 
-					pi.SetValue(newItem, tc.CanConvertFrom(o.GetType()) ?
-						tc.ConvertFrom(o) : Convert.ChangeType(o, pi.PropertyType, CultureInfo.CurrentCulture), null);
-				}
-			}
+                        pi.SetValue(newItem, tc.CanConvertFrom(o.GetType()) ?
+                            tc.ConvertFrom(o) : Convert.ChangeType(o, pi.PropertyType, CultureInfo.CurrentCulture), null);
+                    }
+                }
+            }
 		}
 
 		private static object CheckIfValidElseDefault(object o, Type expected)

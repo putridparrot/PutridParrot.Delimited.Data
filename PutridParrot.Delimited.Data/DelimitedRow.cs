@@ -33,7 +33,7 @@ namespace PutridParrot.Delimited.Data
 	public class DelimitedRow : DynamicObject
 	{
 		private readonly string[] _headings;
-		private readonly string[] _fields;
+		private readonly string?[] _fields;
 
 		[DebuggerStepThrough]
 		static DelimitedRow()
@@ -42,13 +42,13 @@ namespace PutridParrot.Delimited.Data
 		}
 
 		[DebuggerStepThrough]
-		internal DelimitedRow(string[] headings, string[] fields)
+		internal DelimitedRow(string[] headings, string?[] fields)
 		{
 			_headings = headings;
 			_fields = fields;
 		}
 
-		private bool GetField(string header, out string field)
+		private bool GetField(string header, out string? field)
 		{
 			field = null;
 			for (var i = 0; i < _headings.Length; i++)
@@ -67,7 +67,7 @@ namespace PutridParrot.Delimited.Data
 
 		public static CultureInfo CultureInfo { get; set; }
 
-		public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
+		public override bool TryGetIndex(GetIndexBinder binder, object[]? indexes, out object? result)
 		{
 			result = null;
 
@@ -94,7 +94,7 @@ namespace PutridParrot.Delimited.Data
 			return false;
 		}
 
-		public override bool TryGetMember(GetMemberBinder binder, out object result)
+		public override bool TryGetMember(GetMemberBinder binder, out object? result)
 		{
 			if (binder == null)
 			{

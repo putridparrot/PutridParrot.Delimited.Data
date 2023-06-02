@@ -81,13 +81,13 @@ namespace Tests.PutridParrot.Delimited.Data
             var ms = new MemoryStream();
 
             var writer = new CsvWriter(ms);
-            writer.WriteLine(new[] { "Hello", "World" });
+            await writer.WriteLineAsync(new[] { "Hello", "World" });
 
             writer.Flush();
             ms.Position = 0;
 
             var reader = new StreamReader(ms);
-            var result = reader.ReadToEnd();
+            var result = await reader.ReadToEndAsync();
 
             Assert.AreEqual($"Hello,World{Environment.NewLine}", result);
         }

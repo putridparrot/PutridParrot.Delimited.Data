@@ -9,13 +9,13 @@ namespace PutridParrot.Delimited.Data
 	public class FieldReadProperty
 	{
 		[DebuggerStepThrough]
-		public FieldReadProperty(PropertyInfo key, DelimitedFieldReadAttribute value)
+		public FieldReadProperty(PropertyInfo? key, DelimitedFieldReadAttribute value)
 		{
 			Key = key;
 			Value = value;
 		}
 
-		public PropertyInfo Key { get; set; }
+		public PropertyInfo? Key { get; set; }
 		public DelimitedFieldReadAttribute Value { get; set; }
 	}
 }

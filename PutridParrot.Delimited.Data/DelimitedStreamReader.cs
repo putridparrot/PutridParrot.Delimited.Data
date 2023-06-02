@@ -14,8 +14,8 @@ namespace PutridParrot.Delimited.Data
 	/// </summary>
 	public class DelimitedStreamReader : IDisposable
 	{
-		protected Stream Stream;
-		protected StreamReader Reader;
+		protected Stream? Stream;
+		protected StreamReader? Reader;
 		protected IDelimitedSeparatedReader DsReader;
 		protected bool Disposed;
 
@@ -24,7 +24,7 @@ namespace PutridParrot.Delimited.Data
 		{
 		}
 
-		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, Encoding encoding)
+		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, Stream stream, Encoding? encoding)
 		{
             DsReader = delimiterSeparatedReader ?? throw new ArgumentNullException(nameof(delimiterSeparatedReader));
 			Stream = stream ?? throw new ArgumentNullException(nameof(stream));
@@ -42,7 +42,7 @@ namespace PutridParrot.Delimited.Data
 		}
 
 		[ExcludeFromCodeCoverage]
-		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, string path, Encoding encoding) :
+		public DelimitedStreamReader(IDelimitedSeparatedReader delimiterSeparatedReader, string path, Encoding? encoding) :
 			this(delimiterSeparatedReader, new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), encoding)
 		{
 		}
@@ -80,7 +80,7 @@ namespace PutridParrot.Delimited.Data
 			}
 		}
 
-		public virtual IList<string> ReadLine()
+		public virtual IList<string>? ReadLine()
 		{
 			if (Reader == null)
 				throw new DelimitedStreamReaderException("StreamReader is null");
@@ -88,7 +88,7 @@ namespace PutridParrot.Delimited.Data
 			return DsReader.Read(Reader);
 		}
 
-		public IList<string> ReadLine(bool ignoreEmptyRows)
+		public IList<string>? ReadLine(bool ignoreEmptyRows)
 		{
 			var line = ReadLine();
 
@@ -102,21 +102,21 @@ namespace PutridParrot.Delimited.Data
 			return line;
 		}
 
-        public virtual async Task<IList<string>> ReadLineAsync()
+        public virtual async Task<IList<string>?> ReadLineAsync()
         {
             if (Reader == null)
                 throw new DelimitedStreamReaderException("StreamReader is null");
 
-            return await DsReader.ReadAsync(Reader);
+			return await DsReader.ReadAsync(Reader);
         }
 
-        public async Task<IList<string>> ReadLineAsync(bool ignoreEmptyRows)
+        public async Task<IList<string>?> ReadLineAsync(bool ignoreEmptyRows)
         {
             var line = await ReadLineAsync();
 
             if (ignoreEmptyRows)
             {
-                while (line != null && line.All(String.IsNullOrEmpty))
+                while (line != null && line.All(string.IsNullOrEmpty))
                 {
                     line = await ReadLineAsync();
                 }

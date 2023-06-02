@@ -9,14 +9,14 @@ namespace PutridParrot.Delimited.Data.Attributes
 	public abstract class DelimitedFieldAttribute : Attribute
 	{
 		public int ColumnIndex { get; set; }
-		public string Heading { get; set; }
+		public string? Heading { get; set; }
 
 		protected DelimitedFieldAttribute()
 			: this(-1)
 		{
 		}
 
-		protected DelimitedFieldAttribute(string heading)
+		protected DelimitedFieldAttribute(string? heading)
 			: this(-1)
 		{
 			Heading = heading;
@@ -25,6 +25,6 @@ namespace PutridParrot.Delimited.Data.Attributes
 		protected DelimitedFieldAttribute(int columnIndex)
 		{
 			ColumnIndex = columnIndex;
-		}
+        }
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace PutridParrot.Delimited.Data.Tools
 {
+#if DEBUG // needs more testing before it can get release
     public class DelimitedStreamBuilder
     {
         private readonly List<DelimitedStreamReader> _readers;
@@ -23,6 +24,9 @@ namespace PutridParrot.Delimited.Data.Tools
 
         public static DelimitedStreamBuilder New(DelimitedStreamReader reader)
         {
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
+
             var instance = New();
             instance.Concat(reader);
             return instance;
@@ -30,6 +34,9 @@ namespace PutridParrot.Delimited.Data.Tools
 
         public DelimitedStreamBuilder Concat(DelimitedStreamReader reader)
         {
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
+            
             _readers.Add(reader);
             return this;
         }
@@ -52,8 +59,11 @@ namespace PutridParrot.Delimited.Data.Tools
         private IList<string> Process(IList<string> fields) =>
             _processors.Aggregate(fields, (current, processor) => processor(current));
 
-        public void Write(DelimitedStreamWriter writer, int skip = 0)
+        public void Write(DelimitedStreamWriter? writer, int skip = 0)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             foreach (var reader in _readers)
             {
                 for (var i = 0; i < skip; i++)
@@ -72,5 +82,5 @@ namespace PutridParrot.Delimited.Data.Tools
             writer.Flush();
         }
     }
-
+#endif
 }

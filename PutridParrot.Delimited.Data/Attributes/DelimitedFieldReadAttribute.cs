@@ -14,12 +14,12 @@ namespace PutridParrot.Delimited.Data.Attributes
 		{
 		}
 
-		public DelimitedFieldReadAttribute(string heading) :
+		public DelimitedFieldReadAttribute(string? heading) :
 			this(heading, false)
 		{
 		}
 
-		public DelimitedFieldReadAttribute(string heading, bool required) :
+		public DelimitedFieldReadAttribute(string? heading, bool required) :
 			base(heading)
 		{
 			Required = required;
@@ -37,6 +37,6 @@ namespace PutridParrot.Delimited.Data.Attributes
 		}
 
 		public bool Required { get; set; }
-		public string[] AlternateNames { get; set; }
+		public string[]? AlternateNames { get; set; }
 	}
 }

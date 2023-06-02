@@ -14,7 +14,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 		{
 		}
 
-		public TsvWriter(Stream stream, Encoding encoding) :
+		public TsvWriter(Stream stream, Encoding? encoding) :
 			base(new DelimitedSeparatedWriter(new TsvOptions()), stream, encoding)
 		{
 		}
@@ -26,7 +26,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 		}
 
 		[ExcludeFromCodeCoverage]
-		public TsvWriter(string path, Encoding encoding) :
+		public TsvWriter(string path, Encoding? encoding) :
 			this(new FileStream(path, FileMode.Create, FileAccess.Write), encoding)
 		{
 		}

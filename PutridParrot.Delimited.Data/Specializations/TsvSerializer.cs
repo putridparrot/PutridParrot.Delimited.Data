@@ -15,7 +15,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 			return new DelimitedSeparatedReader(new TsvOptions());
 		}
 
-		public static void Serialize(Stream stream, IList<T> list, DelimitedSerializeOptions options)
+		public static void Serialize(Stream stream, IList<T>? list, DelimitedSerializeOptions? options)
 		{
 			DelimitedSerializer<T>.Serialize(GetWriter(), stream, list, options);
 		}
@@ -25,7 +25,7 @@ namespace PutridParrot.Delimited.Data.Specializations
 			return DelimitedSerializer<T>.Deserialize(GetReader(), stream);
 		}
 
-		public static IEnumerable<T> Deserialize(Stream stream, DelimitedDeserializeOptions options)
+		public static IEnumerable<T> Deserialize(Stream stream, DelimitedDeserializeOptions? options)
 		{
 			return DelimitedSerializer<T>.Deserialize(GetReader(), stream, options);
 		}
@@ -35,17 +35,17 @@ namespace PutridParrot.Delimited.Data.Specializations
 			return DelimitedSerializer<T>.Deserialize(GetReader(), data);
 		}
 
-		public static IEnumerable<T> Deserialize(string data, DelimitedDeserializeOptions options)
+		public static IEnumerable<T> Deserialize(string data, DelimitedDeserializeOptions? options)
 		{
 			return DelimitedSerializer<T>.Deserialize(GetReader(), data, options);
 		}
 
-		public static IList<FieldReadProperty> GenerateReadMappings(Stream mappingStream)
+		public static IList<FieldReadProperty?>? GenerateReadMappings(Stream mappingStream)
 		{
 			return DelimitedSerializer<T>.GenerateReadMappings(mappingStream);
 		}
 
-		public static IList<FieldWriteProperty> GenerateWriteMappings(Stream mappingStream)
+		public static IList<FieldWriteProperty?>? GenerateWriteMappings(Stream mappingStream)
 		{
 			return DelimitedSerializer<T>.GenerateWriteMappings(mappingStream);
 		}
